@@ -22,6 +22,8 @@ namespace HospitalApp
 
             //This is login page 
             // alt + 196 to draw the heavier solid line 
+
+            Console.WriteLine("Hi just updated to see if git work ");
             Console.WriteLine("┌────────────────────────────────────────┐");
             Console.WriteLine("|                                        |");
             Console.WriteLine("|   DOTNET Hospital Management System    |");
