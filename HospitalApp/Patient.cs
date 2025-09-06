@@ -13,7 +13,12 @@ namespace HospitalApp
 
     {
 
-        private string address, email, phone;
+        
+
+        public string address { get; private set; }
+        public string email { get; private set; }
+        public string phone { get; private set; }
+
 
         public Patient(string id, string password, string name, string address, string email, string phone, string role)
     : base(id, password, name, role)
@@ -82,11 +87,20 @@ namespace HospitalApp
                         Doctor doctor = new Doctor(Data[0], Data[1], Data[2], Data[3], Data[4], Data[5], "Doctors");
                         Utils.PrintDoctorDetails(doctor);
                     }
-                
-                
+                    else
+                    {
+                        Console.WriteLine("You don't have any registered Doctor (First else)!!!! ");
+                    }
+
+
+              
                 
                 }
-
+                else
+                {
+                    Console.WriteLine("You don't have any registered Doctor (you triggered the second else) ");
+                }
+                
 
 
 
@@ -94,10 +108,10 @@ namespace HospitalApp
 
             catch (Exception e)
             {
-
+                Console.WriteLine($"An error occurred: {e.Message}");
             }
 
-            Console.ReadLine();
+            Console.ReadKey();
         }
         private void BookAppointments()
         {

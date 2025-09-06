@@ -74,7 +74,7 @@ namespace HospitalApp
 
             Console.ReadLine();
 
-            
+
         }
 
         private void AssignedPatients()
@@ -89,21 +89,69 @@ namespace HospitalApp
             Console.WriteLine("└────────────────────────────────────────┘ ");
             Console.WriteLine();
 
-            
+
             Console.WriteLine($"Patients Assigned to {name}");
 
 
-            Console.WriteLine($"{"Patient",-20} | {"Doctor",-20} | {"Email Address",-25} | {"Phone", -15} | {"Address",-30} ");
-
-            Console.WriteLine(new string('-',115));
+            
 
 
             Console.ReadLine();
+            try
+            {
+                string RegisteredPatient = Path.Combine(AppContext.BaseDirectory, "Data", "Doctors", "RegisteredPatient", $"{this.id}.txt"); ;
+
+
+
+
+                if (File.Exists(RegisteredPatient))
+                {
+                    string patientId = File.ReadAllText(RegisteredPatient).Trim();
+                    string patientPath = Path.Combine(AppContext.BaseDirectory, "Data", "Patients", $"{patientId}.txt");
+
+                    if (File.Exists(patientPath))
+                    {
+                        string[] Data = File.ReadAllLines(patientPath)[0].Split('|');
+                       
+                        Patient patient = new Patient(Data[0], Data[1], Data[2], Data[3], Data[4], Data[5], "Patients");
+                        Utils.PrintPatientDetails(patient);
+                    }
+                    else
+                    {
+                        Console.WriteLine("You don't have any registered Patient (First else)!!!! ");
+                    }
+
+
+
+
+                }
+                else
+                {
+                    Console.WriteLine("You don't have any registered Patient (you triggered the second else) ");
+                }
+
+
+
+
+            }
+
+            catch (Exception e)
+            {
+                Console.WriteLine($"An error occurred: {e.Message}");
+            }
+
+            Console.ReadKey();
         }
 
 
 
-       private void ListAllAppointments()
+
+
+
+        
+
+
+        private void ListAllAppointments()
         {
 
             Console.Clear();
