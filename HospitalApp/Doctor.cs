@@ -10,7 +10,13 @@ namespace HospitalApp
     internal class Doctor:User
     {
 
-        private string address, email, phone;
+        public string address { get; private set; }
+        public string email { get; private set; }
+        public string phone { get; private set; }
+
+
+
+
 
         public Doctor(string id, string password,string name, string address, string email, string phone,string role) : base(id, password, name, role)
         {
@@ -83,7 +89,8 @@ namespace HospitalApp
             Console.WriteLine("└────────────────────────────────────────┘ ");
             Console.WriteLine();
 
-            Console.WriteLine($"Doctor name: {name}");
+            
+            Console.WriteLine($"Patients Assigned to {name}");
 
 
             Console.WriteLine($"{"Patient",-20} | {"Doctor",-20} | {"Email Address",-25} | {"Phone", -15} | {"Address",-30} ");

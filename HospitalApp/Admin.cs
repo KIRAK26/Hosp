@@ -193,7 +193,7 @@ namespace HospitalApp
 
                 string input = Console.ReadLine();
 
-
+                //Very useful way to switch to different menu 
                 switch (input)
                 {
                     case "1":

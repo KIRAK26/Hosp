@@ -23,7 +23,7 @@ namespace HospitalApp
             //This is login page 
             // alt + 196 to draw the heavier solid line 
 
-            Console.WriteLine("Hi just updated to see if git work ");
+            
             Console.WriteLine("┌────────────────────────────────────────┐");
             Console.WriteLine("|                                        |");
             Console.WriteLine("|   DOTNET Hospital Management System    |");
@@ -66,7 +66,7 @@ namespace HospitalApp
         //它的作用就是拼接出某个角色的用户文件的绝对路径。
 
         //这样你不用每次都手写 Path.Combine(AppContext.BaseDirectory, "Data", "Patients", fileName)，只要调用 DataPathOf(...) 就行。
-        private static string DataPathOf(string roleFolder, string fileName)
+       private static string DataPathOf(string roleFolder, string fileName)
     => Path.Combine(AppContext.BaseDirectory, "Data", roleFolder, fileName);
 
 

@@ -45,7 +45,9 @@ namespace HospitalApp
 
         }
 
-         private void AssignedDoctor()
+
+     
+        private void AssignedDoctor()
         {
             Console.Clear();
 
@@ -53,7 +55,7 @@ namespace HospitalApp
             Console.WriteLine("|                                        |");
             Console.WriteLine("|   DOTNET Hospital Management System    |");
             Console.WriteLine("|--------------------------------------- |");
-            Console.WriteLine("|               My Details               | ");
+            Console.WriteLine("|               My Doctor                | ");
             Console.WriteLine("└────────────────────────────────────────┘ ");
             Console.WriteLine();
             Console.WriteLine("Your doctor:");
@@ -61,6 +63,39 @@ namespace HospitalApp
             Console.WriteLine( );
             Console.WriteLine("This is just a test case code ");
 
+
+            try
+            {
+                string RegisteredDoctor = Path.Combine(AppContext.BaseDirectory, "Data", "Patients", "RegisteredDoctors", $"{this.id}.txt"); ;
+
+                
+
+
+                if (File.Exists(RegisteredDoctor))
+                {
+                    string doctorId = File.ReadAllText(RegisteredDoctor).Trim();
+                    string doctorPath = Path.Combine(AppContext.BaseDirectory, "Data", "Doctors", $"{doctorId}.txt");
+               
+                if(File.Exists(doctorPath))
+                    {
+                        string[] Data = File.ReadAllLines(doctorPath)[0].Split('|');
+                        Doctor doctor = new Doctor(Data[0], Data[1], Data[2], Data[3], Data[4], Data[5], "Doctors");
+                        Utils.PrintDoctorDetails(doctor);
+                    }
+                
+                
+                
+                }
+
+
+
+
+            }
+
+            catch (Exception e)
+            {
+
+            }
 
             Console.ReadLine();
         }
