@@ -76,6 +76,8 @@ namespace HospitalApp
         }
 
         public abstract void Menu();
+
+        
         
 
 

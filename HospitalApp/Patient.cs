@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HospitalApp.Data;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -9,12 +10,14 @@ using System.Threading.Tasks;
 
 namespace HospitalApp
 {
-    internal class Patient: User
+    internal class Patient: User, PersonalDetails
 
     {
 
-        
 
+
+        //redelcare since it has a base name filed 
+        public string name => base.name;
         public string address { get; private set; }
         public string email { get; private set; }
         public string phone { get; private set; }
@@ -85,7 +88,7 @@ namespace HospitalApp
                     {
                         string[] Data = File.ReadAllLines(doctorPath)[0].Split('|');
                         Doctor doctor = new Doctor(Data[0], Data[1], Data[2], Data[3], Data[4], Data[5], "Doctors");
-                        Utils.PrintDoctorDetails(doctor);
+                        Utils.PrintPersonDetails(doctor);
                     }
                     else
                     {
@@ -142,11 +145,66 @@ namespace HospitalApp
             Console.WriteLine("|                                        |");
             Console.WriteLine("|   DOTNET Hospital Management System    |");
             Console.WriteLine("|--------------------------------------- |");
-            Console.WriteLine("|               My Details               | ");
+            Console.WriteLine("|               My Appointments          | ");
             Console.WriteLine("└────────────────────────────────────────┘ ");
             Console.WriteLine();
             Console.WriteLine($"Appointments for {name}  ");
             Console.WriteLine("This will tell you that this a appointments");
+
+
+
+            var appointments = new List<Appointment>();
+
+            try
+            {
+                // 步骤1：定位当前病人的预约文件
+                string appointmentFilePath = Path.Combine(AppContext.BaseDirectory, "Data", "Appointments", "Patients", $"{this.id}.txt");
+
+                if (File.Exists(appointmentFilePath))
+                {
+                    // 步骤2：读取文件中的每一行，每一行都是一次预约
+                    string[] lines = File.ReadAllLines(appointmentFilePath);
+
+                    foreach (string line in lines)
+                    {
+                        if (string.IsNullOrWhiteSpace(line)) continue; // 跳过空行
+
+                        string[] data = line.Split('|');
+                        if (data.Length >= 3)
+                        {
+                            // data[0] 是 Patient ID, data[1] 是 Doctor ID, data[2] 是 Description
+                            string doctorId = data[1].Trim();
+                            string description = data[2].Trim();
+                            string doctorName = "Unknown Doctor"; // 默认值
+
+                            // 步骤3：根据 Doctor ID 找到医生的名字
+                            string doctorPath = Path.Combine(AppContext.BaseDirectory, "Data", "Doctors", $"{doctorId}.txt");
+                            if (File.Exists(doctorPath))
+                            {
+                                string[] doctorData = File.ReadAllLines(doctorPath)[0].Split('|');
+                                doctorName = doctorData[2]; // 假设名字在第3个位置
+                            }
+
+                            // 步骤4：创建 Appointment 对象并添加到列表
+                            // 病人的名字就是当前登录用户自己的名字 (this.Name)
+                            appointments.Add(new Appointment(doctorName, this.name, description));
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"An error occurred while fetching appointments: {e.Message}");
+            }
+
+            // 步骤5：调用 Utils 方法来显示整个列表
+            Utils.PrintAppointmentsTable(appointments);
+
+            Console.WriteLine("\nPress <Enter> to return to the menu.");
+            
+
+
+
 
             Console.ReadLine();
         }
@@ -177,7 +235,51 @@ namespace HospitalApp
 
         }
 
+        public override string ToString()
+        {
+            // 根据作业第10页的格式要求输出
+            string doctorName = "";
 
+            try
+            {
+                // 2. 使用 Path.Combine 来安全地构建文件路径
+                string relationshipFilePath = Path.Combine(AppContext.BaseDirectory, "Data", "Patients", "RegisteredDoctors", $"{this.id}.txt");
+
+                // 3. 检查关联文件是否存在
+                if (File.Exists(relationshipFilePath))
+                {
+                    string doctorId = File.ReadAllText(relationshipFilePath).Trim();
+
+                    // 确保读取到的 doctorId 不是空的
+                    if (!string.IsNullOrEmpty(doctorId))
+                    {
+                        string doctorFilePath = Path.Combine(AppContext.BaseDirectory, "Data", "Doctors", $"{doctorId}.txt");
+
+                        // 4.【关键】再次检查医生的详细信息文件是否存在，防止程序崩溃
+                        if (File.Exists(doctorFilePath))
+                        {
+                            string[] doctorData = File.ReadAllLines(doctorFilePath)[0].Split('|');
+                            if (doctorData.Length >= 3)
+                            {
+                                doctorName = doctorData[2]; // 获取医生的名字
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // 如果在查找过程中发生任何预料之外的错误，程序也不会崩溃
+                // 而是会安全地使用默认值 "Not Assigned"
+                // 我们可以在控制台打印错误信息，方便调试
+                Console.WriteLine($"\n[DEBUG] Error in Patient.ToString() for Patient ID {this.id}: {ex.Message}");
+            }
+
+            // 5. 使用我们之前优化好的、统一的列宽度来格式化并返回最终的字符串
+            return $"{this.name,-15} | {doctorName,-15} | {this.email,-25} | {this.phone,-12} | {this.address,-40}";
+        }
+     
+        
 
 
 
