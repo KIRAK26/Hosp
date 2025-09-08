@@ -55,7 +55,7 @@ namespace HospitalApp
             }
 
             Console.Write("Password: ");
-            password = PasswordHandle();
+            password = Utils.GetMaskedPasswordInput();
 
             HandleUserLogin();
 
@@ -71,44 +71,44 @@ namespace HospitalApp
 
 
 
-        private static string PasswordHandle()
-        //why is private static ? private means it only can be used in the Login.cs, static means it doesn't need to use the field in the Login.cs
-        {
-            string password = "";
-            //Enum ConsoleKey
-            ConsoleKeyInfo key;
+        //private static string PasswordHandle()
+        ////why is private static ? private means it only can be used in the Login.cs, static means it doesn't need to use the field in the Login.cs
+        //{
+        //    string password = "";
+        //    //Enum ConsoleKey
+        //    ConsoleKeyInfo key;
 
-            while (true)
-            {   //read user input,also block it 
-                key = Console.ReadKey(intercept: true);
+        //    while (true)
+        //    {   //read user input,also block it 
+        //        key = Console.ReadKey(intercept: true);
 
-                //Identify special input from user,it is to identifie the type of the input, such as ConsoleKey.backspace,ConsoleKey.Keychar
+        //        //Identify special input from user,it is to identifie the type of the input, such as ConsoleKey.backspace,ConsoleKey.Keychar
 
-                //When user have input, both the Key,and the KeyChar generate something
-                if (key.Key == ConsoleKey.Enter)
-                {
-                    Console.WriteLine();
-                    break;
-                }
-
-
-                else if (key.Key == ConsoleKey.Backspace && password.Length > 0)
-                {
-                    password = password.Substring(0, password.Length - 1);
-                    Console.Write("\b \b");
-                }
-                //Check if the KeyChar contain the control string 
-                else if (!char.IsControl(key.KeyChar))
-                {
-                    password += key.KeyChar;
-                    Console.Write("*");
-                }
-            }
+        //        //When user have input, both the Key,and the KeyChar generate something
+        //        if (key.Key == ConsoleKey.Enter)
+        //        {
+        //            Console.WriteLine();
+        //            break;
+        //        }
 
 
+        //        else if (key.Key == ConsoleKey.Backspace && password.Length > 0)
+        //        {
+        //            password = password.Substring(0, password.Length - 1);
+        //            Console.Write("\b \b");
+        //        }
+        //        //Check if the KeyChar contain the control string 
+        //        else if (!char.IsControl(key.KeyChar))
+        //        {
+        //            password += key.KeyChar;
+        //            Console.Write("*");
+        //        }
+        //    }
 
-            return password;
-        }
+
+
+        //    return password;
+        //}
 
 
         private void HandleUserLogin()

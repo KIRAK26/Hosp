@@ -408,10 +408,72 @@ namespace HospitalApp
 
             Console.WriteLine("This is to add a new Doctor ");
 
+        
 
+            try
+            {
+                // 1. Generate a unique, random Doctor ID
+                string newDoctorId;
+                string doctorFilePath; // Changed variable name for clarity
+                Random rand = new Random();
+                do
+                {
+                    // The ID generation logic is identical
+                    newDoctorId = rand.Next(13339, 20000).ToString();
+                    // 【Key Change】Save to the "Doctors" folder instead of "Patients"
+                    doctorFilePath = Path.Combine(AppContext.BaseDirectory, "Data", "Doctors", $"{newDoctorId}.txt");
+                } while (File.Exists(doctorFilePath));
+
+                // 2. Gather the doctor's information
+                Console.Write("First Name: ");
+                string firstName = Console.ReadLine();
+                Console.Write("Last Name: ");
+                string lastName = Console.ReadLine();
+                Console.Write("Password: ");
+                string password = Utils.GetMaskedPasswordInput(); // Reuse the password utility
+                Console.Write("Email: ");
+                string email = Console.ReadLine();
+                Console.Write("Phone: ");
+                string phone = Console.ReadLine();
+                Console.Write("Street Number: ");
+                string streetNumber = Console.ReadLine();
+                Console.Write("Street: ");
+                string street = Console.ReadLine();
+                Console.Write("City: ");
+                string city = Console.ReadLine();
+                Console.Write("State: ");
+                string state = Console.ReadLine();
+
+                // 3. Combine the data into the standard format
+                string fullName = $"{firstName} {lastName}";
+                string fullAddress = $"{streetNumber} {street}, {city}, {state}";
+
+                // The data format is the same for doctors and patients
+                string doctorData = $"{newDoctorId}|{password}|{fullName}|{fullAddress}|{email}|{phone}";
+
+                // 4. Write the data to the new file
+                File.WriteAllText(doctorFilePath, doctorData);
+
+                // 5. Display the success message
+                Console.ForegroundColor = ConsoleColor.Green;
+                // 【Key Change】Update the success message
+                Console.WriteLine($"\nDoctor {fullName} added to the system!");
+                Console.ResetColor();
+            }
+            catch (Exception ex)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine($"\nAn error occurred while adding the doctor: {ex.Message}");
+                Console.ResetColor();
+            }
+
+            Console.WriteLine("\nPress <Enter> to return to the menu.");
             Console.ReadLine();
-
         }
+
+
+
+        
 
 
         private void AddPatient()
@@ -429,12 +491,65 @@ namespace HospitalApp
 
 
 
-            Console.WriteLine("This is to add a new patient ");
+            try
+            {
+                // 1. 自动生成一个唯一的、随机的 Patient ID
+                string newPatientId;
+                string patientFilePath;
+                Random rand = new Random();
+                do
+                {
+                    newPatientId = rand.Next(12451, 25000).ToString();
+                    patientFilePath = Path.Combine(AppContext.BaseDirectory, "Data", "Patients", $"{newPatientId}.txt");
+                } while (File.Exists(patientFilePath));
 
+                // 2. 依次获取病人信息 (使用基础的 Console.ReadLine)
+                Console.Write("First Name: ");
+                string firstName = Console.ReadLine();
+                Console.Write("Last Name: ");
+                string lastName = Console.ReadLine();
+                Console.Write("Password: ");
+                string password = Utils.GetMaskedPasswordInput();
+                Console.Write("Email: ");
+                string email = Console.ReadLine();
+                Console.Write("Phone: ");
+                string phone = Console.ReadLine();
+                Console.Write("Street Number: ");
+                string streetNumber = Console.ReadLine();
+                Console.Write("Street: ");
+                string street = Console.ReadLine();
+                Console.Write("City: ");
+                string city = Console.ReadLine();
+                Console.Write("State: ");
+                string state = Console.ReadLine();
 
+                // 3. 组合数据
+                string fullName = $"{firstName} {lastName}";
+                string fullAddress = $"{streetNumber} {street}, {city}, {state}";
+
+                // 格式: id|password|name|address|email|phone
+                string patientData = $"{newPatientId}|{password}|{fullName}|{fullAddress}|{email}|{phone}";
+
+                // 4. 写入文件
+                File.WriteAllText(patientFilePath, patientData);
+
+                // 5. 显示成功信息
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine($"\n{fullName} added to the system!"); //
+                Console.ResetColor();
+            }
+            catch (Exception ex)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine($"\nAn error occurred while adding the patient: {ex.Message}");
+                Console.ResetColor();
+            }
+
+            
             Console.ReadLine();
-
         }
+
+        
 
 
         public override void Menu()
