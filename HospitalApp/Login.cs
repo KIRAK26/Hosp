@@ -12,7 +12,7 @@ namespace HospitalApp
     internal class Login
     {
 
-        private string? id, password;
+        private string? Id, Password;
 
 
         public void LoginMenu()
@@ -38,8 +38,8 @@ namespace HospitalApp
             try
             {
                 Console.Write("ID: ");
-                id = Console.ReadLine(); 
-                if (string.IsNullOrWhiteSpace(id))
+                Id = Console.ReadLine(); 
+                if (string.IsNullOrWhiteSpace(Id))
                 {
                     throw new Exception("The ID cannot be empty!");
                 }
@@ -55,7 +55,7 @@ namespace HospitalApp
             }
 
             Console.Write("Password: ");
-            password = Utils.GetMaskedPasswordInput();
+            Password = Utils.GetMaskedPasswordInput();
 
             HandleUserLogin();
 
@@ -74,7 +74,7 @@ namespace HospitalApp
         //private static string PasswordHandle()
         ////why is private static ? private means it only can be used in the Login.cs, static means it doesn't need to use the field in the Login.cs
         //{
-        //    string password = "";
+        //    string Password = "";
         //    //Enum ConsoleKey
         //    ConsoleKeyInfo key;
 
@@ -92,22 +92,22 @@ namespace HospitalApp
         //        }
 
 
-        //        else if (key.Key == ConsoleKey.Backspace && password.Length > 0)
+        //        else if (key.Key == ConsoleKey.Backspace && Password.Length > 0)
         //        {
-        //            password = password.Substring(0, password.Length - 1);
+        //            Password = Password.Substring(0, Password.Length - 1);
         //            Console.Write("\b \b");
         //        }
         //        //Check if the KeyChar contain the control string 
         //        else if (!char.IsControl(key.KeyChar))
         //        {
-        //            password += key.KeyChar;
+        //            Password += key.KeyChar;
         //            Console.Write("*");
         //        }
         //    }
 
 
 
-        //    return password;
+        //    return Password;
         //}
 
 
@@ -115,8 +115,8 @@ namespace HospitalApp
         {
             try
 
-            {   // user entered their id to find the file 
-                string fileName = $"{id}.txt";
+            {   // user entered their Id to find the file 
+                string fileName = $"{Id}.txt";
 
                 string adminPath = DataPathOf("Administrators", fileName);
                 string doctorPath = DataPathOf("Doctors", fileName);
@@ -169,7 +169,7 @@ namespace HospitalApp
 
 
 
-                    case "Invalid password, press <Enter> to try again":
+                    case "Invalid Password, press <Enter> to try again":
                         Console.WriteLine(e.Message);
                         Console.ReadKey();
                         Console.Clear();
@@ -231,7 +231,7 @@ namespace HospitalApp
 
 
             
-            if (id == details[0] && password == details[1])
+            if (Id == details[0] && Password == details[1])
             {
                 Console.WriteLine("User account exists");
 
@@ -268,7 +268,7 @@ namespace HospitalApp
 
             else
             {
-                throw new Exception("Invalid password, press <Enter> to try again");
+                throw new Exception("Invalid Password, press <Enter> to try again");
             }
 
         }

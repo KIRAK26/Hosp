@@ -1,1 +1,4 @@
 12345|13335|Feel very sick
+12345|13335|I have headache
+12345|13335|I have pain in legs
+12349|13335|I have domin pain

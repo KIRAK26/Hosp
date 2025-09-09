@@ -10,20 +10,20 @@ namespace HospitalApp
 {
     internal class Doctor : User, PersonalDetails
     {
-        public string name => base.name;
-        public string address { get; private set; }
-        public string email { get; private set; }
-        public string phone { get; private set; }
+        public string Name => base.Name;
+        public string Address { get; private set; }
+        public string Email { get; private set; }
+        public string Phone { get; private set; }
 
 
 
 
 
-        public Doctor(string id, string password, string name, string address, string email, string phone, string role) : base(id, password, name, role)
+        public Doctor(string Id, string Password, string Name, string Address, string Email, string Phone, string Role) : base(Id, Password, Name, Role)
         {
-            this.address = address;
-            this.email = email;
-            this.phone = phone;
+            this.Address = Address;
+            this.Email = Email;
+            this.Phone = Phone;
 
         }
 
@@ -42,7 +42,7 @@ namespace HospitalApp
             Console.WriteLine("└────────────────────────────────────────┘ ");
             Console.WriteLine();
 
-            Console.WriteLine($"Doctor name: {name}");
+            Console.WriteLine($"Doctor Name: {Name}");
 
             Console.ReadKey();
             Menu();
@@ -64,14 +64,14 @@ namespace HospitalApp
             Console.WriteLine("└────────────────────────────────────────┘ ");
             Console.WriteLine();
 
-            Console.WriteLine($"Doctor name: {name}");
+            Console.WriteLine($"Doctor Name: {Name}");
 
 
 
 
             Console.WriteLine($"{"Name",-20} | {"Email Address",-25} | {"Phone",-15} | {"Address",-30}");
             Console.WriteLine(new string('-', 95));
-            Console.WriteLine($"{name,-20} | {email,-25} | {phone,-15} | {address,-30}");
+            Console.WriteLine($"{Name,-20} | {Email,-25} | {Phone,-15} | {Address,-30}");
 
             Console.ReadLine();
 
@@ -93,7 +93,7 @@ namespace HospitalApp
 
 
 
-            Console.WriteLine($"Patients Assigned to {name}");
+            Console.WriteLine($"Patients Assigned to {Name}");
 
 
 
@@ -102,7 +102,7 @@ namespace HospitalApp
 
             try
             {
-                string RegisteredPatient = Path.Combine(AppContext.BaseDirectory, "Data", "Doctors", "RegisteredPatient", $"{this.id}.txt"); ;
+                string RegisteredPatient = Path.Combine(AppContext.BaseDirectory, "Data", "Doctors", "RegisteredPatient", $"{this.Id}.txt"); ;
 
 
 
@@ -167,7 +167,7 @@ namespace HospitalApp
             Console.WriteLine("└────────────────────────────────────────┘ ");
             Console.WriteLine();
 
-            Console.WriteLine($"Doctor name: {name}");
+            Console.WriteLine($"Doctor Name: {Name}");
             Console.WriteLine("This is a Appointments listing details ");
 
             var appointments = new List<Appointment>();
@@ -175,7 +175,7 @@ namespace HospitalApp
             try
             {
                 // 【不同点 1】现在我们在 Doctors 文件夹里，用【医生自己的ID】来查找预约文件
-                string appointmentFilePath = Path.Combine(AppContext.BaseDirectory, "Data", "Appointments", "Doctors", $"{this.id}.txt");
+                string appointmentFilePath = Path.Combine(AppContext.BaseDirectory, "Data", "Appointments", "Doctors", $"{this.Id}.txt");
 
                 if (File.Exists(appointmentFilePath))
                 {
@@ -202,7 +202,7 @@ namespace HospitalApp
                             }
 
                             // 【不同点 3】创建对象时，医生的名字就是当前登录的医生自己 (this.Name)
-                            appointments.Add(new Appointment(this.name, patientName, description));
+                            appointments.Add(new Appointment(this.Name, patientName, description));
                         }
                     }
                 }
@@ -240,7 +240,7 @@ namespace HospitalApp
             Console.WriteLine("└────────────────────────────────────────┘ ");
             Console.WriteLine();
 
-            Console.WriteLine($"Doctor name: {name}");
+            Console.WriteLine($"Doctor Name: {Name}");
             
 
            
@@ -297,11 +297,11 @@ namespace HospitalApp
                             {
                                 // 文件内容: PatientID|DoctorID|Description
                                 // 我们只关心和当前医生相关的预约
-                                if (data[1].Trim() == this.id)
+                                if (data[1].Trim() == this.Id)
                                 {
                                     string description = data[2].Trim();
                                     // 创建 Appointment 对象, 医生的名字就是当前医生自己 (this.Name)
-                                    appointments.Add(new Appointment(this.name, patientName, description));
+                                    appointments.Add(new Appointment(this.Name, patientName, description));
                                 }
                             }
                         }
@@ -355,7 +355,7 @@ namespace HospitalApp
             Console.WriteLine("└────────────────────────────────────────┘ ");
             Console.WriteLine();
 
-            Console.WriteLine($"Doctor name: {name}");
+            Console.WriteLine($"Doctor Name: {Name}");
             Console.WriteLine("This is for checking patients  ");
 
 
@@ -380,11 +380,11 @@ namespace HospitalApp
                     {
                         // 步骤4：如果病人存在，创建 Patient 对象
                         string[] patientData = File.ReadAllLines(patientPath)[0].Split('|');
-                        // 假设病人文件格式: id|password|name|address|email|phone
+                        // 假设病人文件格式: Id|Password|Name|Address|Email|Phone
                         Patient patient = new Patient(patientData[0], patientData[1], patientData[2], patientData[3], patientData[4], patientData[5], "Patients");
 
                         // 步骤5：根据病人的 ID，查找他/她关联的医生
-                        string registeredDoctorPath = Path.Combine(AppContext.BaseDirectory, "Data", "Patients", "RegisteredDoctors", $"{patient.id}.txt");
+                        string registeredDoctorPath = Path.Combine(AppContext.BaseDirectory, "Data", "Patients", "RegisteredDoctors", $"{patient.Id}.txt");
                         if (File.Exists(registeredDoctorPath))
                         {
                             string doctorId = File.ReadAllText(registeredDoctorPath).Trim();
@@ -403,7 +403,7 @@ namespace HospitalApp
                         {
                             // 如果病人存在但没有关联医生，也应该能显示（医生部分为空）
                             // 为了简化，我们这里暂时认为每个病人都有医生
-                            Console.WriteLine($"\nCould not find the assigned doctor for patient {patient.name}.");
+                            Console.WriteLine($"\nCould not find the assigned doctor for patient {patient.Name}.");
                         }
                     }
                     else
@@ -431,7 +431,7 @@ namespace HospitalApp
         {
             // 这个方法会返回一个我们精心格式化好的字符串，而不是默认的类名。
             // 请确保你的 Doctor 类拥有 Name, Email, Phone, Address 这些公共属性。
-            return $"{this.name,-20} | {this.email,-25} | {this.phone,-15} | {this.address,-30}";
+            return $"{this.Name,-20} | {this.Email,-25} | {this.Phone,-15} | {this.Address,-30}";
         }
 
 
@@ -451,7 +451,7 @@ namespace HospitalApp
                 Console.WriteLine();
 
 
-                Console.WriteLine($"Welcome to DOTNET Hospital Management System {name}");
+                Console.WriteLine($"Welcome to DOTNET Hospital Management System {Name}");
 
 
                 foreach (string option in options)

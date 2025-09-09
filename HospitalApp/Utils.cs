@@ -24,7 +24,7 @@ namespace HospitalApp
             if (person != null)
             {
                 // 用同样的方式格式化医生的数据，确保对齐
-                Console.WriteLine($"{person.name,-20} | {person.email,-25} | {person.phone,-15} | {person.address,-30}");
+                Console.WriteLine($"{person.Name,-20} | {person.Email,-25} | {person.Phone,-15} | {person.Address,-30}");
             }
             else
             {
@@ -39,7 +39,7 @@ namespace HospitalApp
 
         public static string GetMaskedPasswordInput()
         {
-            string password = "";
+            string Password = "";
             ConsoleKeyInfo key;
 
             while (true)
@@ -50,18 +50,18 @@ namespace HospitalApp
                     Console.WriteLine();
                     break;
                 }
-                else if (key.Key == ConsoleKey.Backspace && password.Length > 0)
+                else if (key.Key == ConsoleKey.Backspace && Password.Length > 0)
                 {
-                    password = password.Substring(0, password.Length - 1);
+                    Password = Password.Substring(0, Password.Length - 1);
                     Console.Write("\b \b");
                 }
                 else if (!char.IsControl(key.KeyChar))
                 {
-                    password += key.KeyChar;
+                    Password += key.KeyChar;
                     Console.Write("*");
                 }
             }
-            return password;
+            return Password;
         }
 
 
@@ -100,7 +100,7 @@ namespace HospitalApp
         //    if (patient != null)
         //    {
         //        // 用同样的方式格式化医生的数据，确保对齐
-        //        Console.WriteLine($"{patient.name,-20} | {patient.email,-25} | {patient.phone,-15} | {patient.address,-30}");
+        //        Console.WriteLine($"{patient.Name,-20} | {patient.Email,-25} | {patient.Phone,-15} | {patient.Address,-30}");
         //    }
         //    else
         //    {
@@ -118,18 +118,17 @@ namespace HospitalApp
             Console.WriteLine(new string('-', 115));
 
             // 检查传入的 patient 对象是否有效
-            if (patient != null && doctor != null)
+            if (patient is null)
             {
+                
+
                 // 使用我们之前定义好的公共属性来获取并打印信息
-                Console.WriteLine($"{patient.name,-15} | {doctor.name,-15} | {patient.email,-25} | {patient.phone,-12} | {patient.address,-40}");
-            }
-            else
-            {
-                // 如果传入的对象是 null，说明没有找到病人
                 Console.WriteLine("Patient details could not be displayed.");
+                return;
+
             }
 
-
+            Console.WriteLine($"{patient.Name,-15} | {(doctor?.Name?? "Unassigned"),-15} | {patient.Email,-25} | {patient.Phone,-12} | {patient.Address,-40}");
 
         }
     }

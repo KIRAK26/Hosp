@@ -10,20 +10,20 @@ namespace HospitalApp
     public abstract class User
     {
 
-        public string role, name, id, password;
+        public string Role, Name, Id, Password;
         public string[] options = Array.Empty<string>();
 
 
 
 
-        public User(string id, string password, string name, string role)
+        public User(string Id, string Password, string Name, string Role)
         {
-            this.id = id;
-            this.password = password;
-            this.name = name;
-            this.role = role;
+            this.Id = Id;
+            this.Password = Password;
+            this.Name = Name;
+            this.Role = Role;
 
-            switch (role)
+            switch (Role)
             {
                 case "Patients":
                     options = new string[] {
@@ -69,7 +69,7 @@ namespace HospitalApp
 
                     break;
                 default:
-                    throw new Exception("No such role has been found");
+                    throw new Exception("No such Role has been found");
 
             }
 

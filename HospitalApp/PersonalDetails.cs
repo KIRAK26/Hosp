@@ -8,10 +8,10 @@ namespace HospitalApp
 {
     public interface PersonalDetails
     {
-        string name { get; }
-        string email { get; }
-        string phone { get; }
-        string address { get; }
+        string Name { get; }
+        string Email { get; }
+        string Phone { get; }
+        string Address { get; }
 
     }
 }

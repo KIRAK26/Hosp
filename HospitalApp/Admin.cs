@@ -12,14 +12,14 @@ namespace HospitalApp
 
 
 
-        public Admin(string id, string password, string name, string role) : base(id, password, name, role)
+        public Admin(string Id, string Password, string Name, string Role) : base(Id, Password, Name, Role)
         {
 
         }
 
         public void Details()
         {
-            Console.WriteLine($"I am the admin {name}");
+            Console.WriteLine($"I am the admin {Name}");
 
             Menu();
         }
@@ -120,8 +120,8 @@ namespace HospitalApp
                 Console.WriteLine("This is to check Doctor's details ");
 
 
-                Console.WriteLine("--- Check Patient Details ---"); // 可以加一个副标题更清晰
-                Console.WriteLine("Enter the ID of the patient to check (or type 'exit' to return).");
+                
+                Console.WriteLine("Enter the ID of the Doctor to check (or type 'exit' to return).");
 
                 // 如果有错误信息，就显示它
                 if (!string.IsNullOrEmpty(errorMessage))
@@ -131,57 +131,41 @@ namespace HospitalApp
                     Console.ResetColor();
                 }
 
-                // 2. 获取用户输入
                 Console.Write("> ");
-                string patientId = Console.ReadLine();
+                string doctorId = Console.ReadLine();
 
-                if (patientId.ToLower() == "exit")
+                if (doctorId.ToLower() == "exit")
                 {
-                    break; // 退出循环
+                    break;
                 }
 
-                if (string.IsNullOrWhiteSpace(patientId))
+                if (string.IsNullOrWhiteSpace(doctorId))
                 {
-                    errorMessage = "Patient ID cannot be empty. Please try again.";
-                    continue; // 重新循环
+                    errorMessage = "Doctor ID cannot be empty. Please try again.";
+                    continue;
                 }
 
                 try
                 {
-                    // 3. 核心逻辑：这部分和 Doctor.cs 里的版本完全一样
-                    string patientPath = Path.Combine(AppContext.BaseDirectory, "Data", "Patients", $"{patientId}.txt");
+                    // 【核心改动】这里的逻辑现在是查找【医生】
+                    string doctorPath = Path.Combine(AppContext.BaseDirectory, "Data", "Doctors", $"{doctorId}.txt");
 
-                    if (File.Exists(patientPath))
+                    if (File.Exists(doctorPath))
                     {
-                        // 创建 Patient 对象
-                        string[] patientData = File.ReadAllLines(patientPath)[0].Split('|');
-                        Patient patient = new Patient(patientData[0], patientData[1], patientData[2], patientData[3], patientData[4], patientData[5], "Patients");
+                        // 1. 读取文件并创建 Doctor 对象
+                        string[] doctorData = File.ReadAllLines(doctorPath)[0].Split('|');
+                        Doctor doctor = new Doctor(doctorData[0], doctorData[1], doctorData[2], doctorData[3], doctorData[4], doctorData[5], "Doctors");
 
-                        Doctor assignedDoctor = null; // 先准备一个空的医生对象
-
-                        // 查找病人关联的医生
-                        string registeredDoctorPath = Path.Combine(AppContext.BaseDirectory, "Data", "Patients", "RegisteredDoctors", $"{patient.id}.txt");
-                        if (File.Exists(registeredDoctorPath))
-                        {
-                            string doctorId = File.ReadAllText(registeredDoctorPath).Trim();
-                            string doctorPath = Path.Combine(AppContext.BaseDirectory, "Data", "Doctors", $"{doctorId}.txt");
-                            if (File.Exists(doctorPath))
-                            {
-                                string[] doctorData = File.ReadAllLines(doctorPath)[0].Split('|');
-                                assignedDoctor = new Doctor(doctorData[0], doctorData[1], doctorData[2], doctorData[3], doctorData[4], doctorData[5], "Doctors");
-                            }
-                        }
-
-                        // 4. 调用我们早已写好的、完全可重用的 Utils 方法来打印结果
-                        Utils.PrintPatientDetails(patient, assignedDoctor);
+                        // 2. 调用我们为医生专门创建的打印方法
+                        Utils.PrintPersonDetails(doctor);
 
                         // 任务完成，退出循环
                         break;
                     }
                     else
                     {
-                        // 病人ID不存在，设置错误信息并重新循环
-                        errorMessage = $"Error: No patient found with ID '{patientId}'. Please try again.";
+                        // 医生ID不存在，设置错误信息并重新循环
+                        errorMessage = $"Error: No doctor found with ID '{doctorId}'. Please try again.";
                         continue;
                     }
                 }
@@ -192,18 +176,17 @@ namespace HospitalApp
                 }
             } // while 循环结束
 
-            // 5. 结束交互
             Console.WriteLine("\nPress <Enter> to return to the menu.");
             Console.ReadLine();
         }
 
 
-       
-
-            
 
 
-        
+
+
+
+
 
 
         private void ListAllPatients()
@@ -265,7 +248,7 @@ namespace HospitalApp
                 {
                     // 1. 为当前循环的这个病人，实时查找他/她医生的名字
                     string doctorName = "Not Assigned"; // 默认值
-                    string registeredDoctorPath = Path.Combine(AppContext.BaseDirectory, "Data", "Patients", "RegisteredDoctors", $"{pat.id}.txt");
+                    string registeredDoctorPath = Path.Combine(AppContext.BaseDirectory, "Data", "Patients", "RegisteredDoctors", $"{pat.Id}.txt");
                     if (File.Exists(registeredDoctorPath))
                     {
                         string doctorId = File.ReadAllText(registeredDoctorPath).Trim();
@@ -278,7 +261,7 @@ namespace HospitalApp
                     }
 
                     // 2. 手动构建包含所有信息的输出字符串
-                    Console.WriteLine($"{pat.name,-15} | {doctorName,-15} | {pat.email,-25} | {pat.phone,-12} | {pat.address,-30}");
+                    Console.WriteLine($"{pat.Name,-15} | {doctorName,-15} | {pat.Email,-25} | {pat.Phone,-12} | {pat.Address,-30}");
                 }
             }
 
@@ -344,7 +327,7 @@ namespace HospitalApp
                         Doctor assignedDoctor = null; // 先准备一个空的医生对象
 
                         // 查找病人关联的医生
-                        string registeredDoctorPath = Path.Combine(AppContext.BaseDirectory, "Data", "Patients", "RegisteredDoctors", $"{patient.id}.txt");
+                        string registeredDoctorPath = Path.Combine(AppContext.BaseDirectory, "Data", "Patients", "RegisteredDoctors", $"{patient.Id}.txt");
                         if (File.Exists(registeredDoctorPath))
                         {
                             string doctorId = File.ReadAllText(registeredDoctorPath).Trim();
@@ -414,7 +397,7 @@ namespace HospitalApp
             {
                 // 1. Generate a unique, random Doctor ID
                 string newDoctorId;
-                string doctorFilePath; // Changed variable name for clarity
+                string doctorFilePath; // Changed variable Name for clarity
                 Random rand = new Random();
                 do
                 {
@@ -430,11 +413,11 @@ namespace HospitalApp
                 Console.Write("Last Name: ");
                 string lastName = Console.ReadLine();
                 Console.Write("Password: ");
-                string password = Utils.GetMaskedPasswordInput(); // Reuse the password utility
+                string Password = Utils.GetMaskedPasswordInput(); // Reuse the Password utility
                 Console.Write("Email: ");
-                string email = Console.ReadLine();
+                string Email = Console.ReadLine();
                 Console.Write("Phone: ");
-                string phone = Console.ReadLine();
+                string Phone = Console.ReadLine();
                 Console.Write("Street Number: ");
                 string streetNumber = Console.ReadLine();
                 Console.Write("Street: ");
@@ -449,7 +432,7 @@ namespace HospitalApp
                 string fullAddress = $"{streetNumber} {street}, {city}, {state}";
 
                 // The data format is the same for doctors and patients
-                string doctorData = $"{newDoctorId}|{password}|{fullName}|{fullAddress}|{email}|{phone}";
+                string doctorData = $"{newDoctorId}|{Password}|{fullName}|{fullAddress}|{Email}|{Phone}";
 
                 // 4. Write the data to the new file
                 File.WriteAllText(doctorFilePath, doctorData);
@@ -509,11 +492,11 @@ namespace HospitalApp
                 Console.Write("Last Name: ");
                 string lastName = Console.ReadLine();
                 Console.Write("Password: ");
-                string password = Utils.GetMaskedPasswordInput();
+                string Password = Utils.GetMaskedPasswordInput();
                 Console.Write("Email: ");
-                string email = Console.ReadLine();
+                string Email = Console.ReadLine();
                 Console.Write("Phone: ");
-                string phone = Console.ReadLine();
+                string Phone = Console.ReadLine();
                 Console.Write("Street Number: ");
                 string streetNumber = Console.ReadLine();
                 Console.Write("Street: ");
@@ -527,8 +510,8 @@ namespace HospitalApp
                 string fullName = $"{firstName} {lastName}";
                 string fullAddress = $"{streetNumber} {street}, {city}, {state}";
 
-                // 格式: id|password|name|address|email|phone
-                string patientData = $"{newPatientId}|{password}|{fullName}|{fullAddress}|{email}|{phone}";
+                // 格式: Id|Password|Name|Address|Email|Phone
+                string patientData = $"{newPatientId}|{Password}|{fullName}|{fullAddress}|{Email}|{Phone}";
 
                 // 4. 写入文件
                 File.WriteAllText(patientFilePath, patientData);
@@ -568,7 +551,7 @@ namespace HospitalApp
                 Console.WriteLine();
 
 
-                Console.WriteLine($"Welcome to DOTNET Hospital Management System {name}");
+                Console.WriteLine($"Welcome to DOTNET Hospital Management System {Name}");
 
                 foreach (string option in options)
                 {
