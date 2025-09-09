@@ -371,82 +371,201 @@ namespace HospitalApp
 
         }
 
-        
+
+
+
+        //private void AddDoctor()
+        //{
+        //    Console.Clear();
+
+        //    Console.WriteLine("┌────────────────────────────────────────┐");
+        //    Console.WriteLine("|                                        |");
+        //    Console.WriteLine("|   DOTNET Hospital Management System    |");
+        //    Console.WriteLine("|--------------------------------------- |");
+        //    Console.WriteLine("|              Administrator Menu        | ");
+        //    Console.WriteLine("└────────────────────────────────────────┘ ");
+        //    Console.WriteLine();
+
+
+
+
+        //    Console.WriteLine("This is to add a new Doctor ");
+
+
+
+        //    try
+        //    {
+        //        // 1. Generate a unique, random Doctor ID
+        //        string newDoctorId;
+        //        string doctorFilePath; // Changed variable Name for clarity
+        //        Random rand = new Random();
+        //        do
+        //        {
+        //            // The ID generation logic is identical
+        //            newDoctorId = rand.Next(13339, 20000).ToString();
+        //            // 【Key Change】Save to the "Doctors" folder instead of "Patients"
+        //            doctorFilePath = Path.Combine(AppContext.BaseDirectory, "Data", "Doctors", $"{newDoctorId}.txt");
+        //        } while (File.Exists(doctorFilePath));
+
+        //        // 2. Gather the doctor's information
+        //        Console.Write("First Name: ");
+        //        string firstName = Console.ReadLine();
+        //        Console.Write("Last Name: ");
+        //        string lastName = Console.ReadLine();
+        //        Console.Write("Password: ");
+        //        string Password = Utils.GetMaskedPasswordInput(); // Reuse the Password utility
+        //        Console.Write("Email: ");
+        //        string Email = Console.ReadLine();
+        //        Console.Write("Phone: ");
+        //        string Phone = Console.ReadLine();
+        //        Console.Write("Street Number: ");
+        //        string streetNumber = Console.ReadLine();
+        //        Console.Write("Street: ");
+        //        string street = Console.ReadLine();
+        //        Console.Write("City: ");
+        //        string city = Console.ReadLine();
+        //        Console.Write("State: ");
+        //        string state = Console.ReadLine();
+
+        //        // 3. Combine the data into the standard format
+        //        string fullName = $"{firstName} {lastName}";
+        //        string fullAddress = $"{streetNumber} {street}, {city}, {state}";
+
+        //        // The data format is the same for doctors and patients
+        //        string doctorData = $"{newDoctorId}|{Password}|{fullName}|{fullAddress}|{Email}|{Phone}";
+
+        //        // 4. Write the data to the new file
+        //        File.WriteAllText(doctorFilePath, doctorData);
+
+        //        // 5. Display the success message
+        //        Console.ForegroundColor = ConsoleColor.Green;
+        //        // 【Key Change】Update the success message
+        //        Console.WriteLine($"\nDoctor {fullName} added to the system!");
+        //        Console.ResetColor();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Console.ForegroundColor = ConsoleColor.Red;
+        //        Console.WriteLine($"\nAn error occurred while adding the doctor: {ex.Message}");
+        //        Console.ResetColor();
+        //    }
+
+        //    Console.WriteLine("\nPress <Enter> to return to the menu.");
+        //    Console.ReadLine();
+        //}
 
 
         private void AddDoctor()
         {
-            Console.Clear();
+            // 1. 准备工作：定义表单的标签和值的数组 (和AddPatient完全一样)
+            var labels = new string[]
+            {
+        "First Name", "Last Name", "Password", "Email", "Phone",
+        "Street Number", "Street", "City", "State"
+            };
+            var values = new string[labels.Length];
+            for (int i = 0; i < values.Length; i++) values[i] = "";
 
-            Console.WriteLine("┌────────────────────────────────────────┐");
-            Console.WriteLine("|                                        |");
-            Console.WriteLine("|   DOTNET Hospital Management System    |");
-            Console.WriteLine("|--------------------------------------- |");
-            Console.WriteLine("|              Administrator Menu        | ");
-            Console.WriteLine("└────────────────────────────────────────┘ ");
-            Console.WriteLine();
+            int currentField = 0;
+            string errorMessage = "";
+            ConsoleKeyInfo keyInfo;
 
+            // 2. 主循环：负责界面绘制、光标导航和接收输入
+            while (true)
+            {
+                Console.Clear();
+                // 【改动】这里的标题现在是 Add Doctor
+                Console.WriteLine("┌────────────────────────────────────────┐");
+                Console.WriteLine("|    DOTNET Hospital Management System   |");
+                Console.WriteLine("|----------------------------------------|");
+                Console.WriteLine("|                Add Doctor                |");
+                Console.WriteLine("└────────────────────────────────────────┘");
+                Console.WriteLine("\nUse UP/DOWN arrows to switch. Press ENTER to submit when done.");
 
+                if (!string.IsNullOrEmpty(errorMessage))
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine(errorMessage);
+                    Console.ResetColor();
+                }
 
+                int formTop = Console.CursorTop;
+                int labelWidth = 15;
 
-            Console.WriteLine("This is to add a new Doctor ");
+                for (int i = 0; i < labels.Length; i++)
+                {
+                    Console.SetCursorPosition(0, formTop + i);
+                    string displayValue = (i == 2) ? new string('*', values[i].Length) : values[i];
+                    Console.Write($"{labels[i].PadRight(labelWidth)}: {displayValue}");
+                }
 
-        
+                Console.SetCursorPosition(labelWidth + 2 + values[currentField].Length, formTop + currentField);
+                keyInfo = Console.ReadKey(true);
+
+                if (keyInfo.Key == ConsoleKey.Enter)
+                {
+                    bool allFieldsFilled = !values.Any(string.IsNullOrWhiteSpace);
+                    if (allFieldsFilled)
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        errorMessage = "All fields are required. Please fill in the missing information.";
+                        continue;
+                    }
+                }
+                else if (keyInfo.Key == ConsoleKey.UpArrow) currentField = (currentField == 0) ? labels.Length - 1 : currentField - 1;
+                else if (keyInfo.Key == ConsoleKey.DownArrow) currentField = (currentField == labels.Length - 1) ? 0 : currentField + 1;
+                else if (keyInfo.Key == ConsoleKey.Backspace && values[currentField].Length > 0) values[currentField] = values[currentField].Substring(0, values[currentField].Length - 1);
+                else if (!char.IsControl(keyInfo.KeyChar)) values[currentField] += keyInfo.KeyChar;
+            } // UI循环结束
+
+            // 3. 循环结束后，处理并保存数据
+            Console.SetCursorPosition(0, Console.CursorTop + 2);
 
             try
             {
-                // 1. Generate a unique, random Doctor ID
+                // a) 从values数组中提取数据
+                string firstName = values[0];
+                string lastName = values[1];
+                string password = values[2];
+                string email = values[3];
+                string phone = values[4];
+                string streetNumber = values[5];
+                string street = values[6];
+                string city = values[7];
+                string state = values[8];
+
+                // b) 随机生成唯一的医生ID
                 string newDoctorId;
-                string doctorFilePath; // Changed variable Name for clarity
+                string doctorFilePath;
                 Random rand = new Random();
                 do
                 {
-                    // The ID generation logic is identical
-                    newDoctorId = rand.Next(13339, 20000).ToString();
-                    // 【Key Change】Save to the "Doctors" folder instead of "Patients"
+                    newDoctorId = rand.Next(10000, 99999999).ToString();
+                    // 【改动】确保文件保存在 "Doctors" 文件夹
                     doctorFilePath = Path.Combine(AppContext.BaseDirectory, "Data", "Doctors", $"{newDoctorId}.txt");
                 } while (File.Exists(doctorFilePath));
 
-                // 2. Gather the doctor's information
-                Console.Write("First Name: ");
-                string firstName = Console.ReadLine();
-                Console.Write("Last Name: ");
-                string lastName = Console.ReadLine();
-                Console.Write("Password: ");
-                string Password = Utils.GetMaskedPasswordInput(); // Reuse the Password utility
-                Console.Write("Email: ");
-                string Email = Console.ReadLine();
-                Console.Write("Phone: ");
-                string Phone = Console.ReadLine();
-                Console.Write("Street Number: ");
-                string streetNumber = Console.ReadLine();
-                Console.Write("Street: ");
-                string street = Console.ReadLine();
-                Console.Write("City: ");
-                string city = Console.ReadLine();
-                Console.Write("State: ");
-                string state = Console.ReadLine();
-
-                // 3. Combine the data into the standard format
+                // c) 组合数据
                 string fullName = $"{firstName} {lastName}";
                 string fullAddress = $"{streetNumber} {street}, {city}, {state}";
+                string doctorData = $"{newDoctorId}|{password}|{fullName}|{fullAddress}|{email}|{phone}";
 
-                // The data format is the same for doctors and patients
-                string doctorData = $"{newDoctorId}|{Password}|{fullName}|{fullAddress}|{Email}|{Phone}";
-
-                // 4. Write the data to the new file
+                // d) 写入文件
                 File.WriteAllText(doctorFilePath, doctorData);
 
-                // 5. Display the success message
+                // e) 显示成功信息
                 Console.ForegroundColor = ConsoleColor.Green;
-                // 【Key Change】Update the success message
+                // 【改动】成功信息的主语是 "Doctor"
                 Console.WriteLine($"\nDoctor {fullName} added to the system!");
                 Console.ResetColor();
             }
             catch (Exception ex)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine($"\nAn error occurred while adding the doctor: {ex.Message}");
+                Console.WriteLine($"\nAn error occurred: {ex.Message}");
                 Console.ResetColor();
             }
 
@@ -456,82 +575,240 @@ namespace HospitalApp
 
 
 
-        
 
+
+        //private void AddPatient()
+        //{
+        //    Console.Clear();
+
+        //    Console.WriteLine("┌────────────────────────────────────────┐");
+        //    Console.WriteLine("|                                        |");
+        //    Console.WriteLine("|   DOTNET Hospital Management System    |");
+        //    Console.WriteLine("|--------------------------------------- |");
+        //    Console.WriteLine("|              Administrator Menu        | ");
+        //    Console.WriteLine("└────────────────────────────────────────┘ ");
+        //    Console.WriteLine();
+
+
+
+
+        //    try
+        //    {
+        //        // 1. 自动生成一个唯一的、随机的 Patient ID
+        //        string newPatientId;
+        //        string patientFilePath;
+        //        Random rand = new Random();
+        //        do
+        //        {
+        //            newPatientId = rand.Next(12451, 25000).ToString();
+        //            patientFilePath = Path.Combine(AppContext.BaseDirectory, "Data", "Patients", $"{newPatientId}.txt");
+        //        } while (File.Exists(patientFilePath));
+
+        //        // 2. 依次获取病人信息 (使用基础的 Console.ReadLine)
+        //        Console.Write("First Name: ");
+        //        string firstName = Console.ReadLine();
+        //        Console.Write("Last Name: ");
+        //        string lastName = Console.ReadLine();
+        //        Console.Write("Password: ");
+        //        string Password = Utils.GetMaskedPasswordInput();
+        //        Console.Write("Email: ");
+        //        string Email = Console.ReadLine();
+        //        Console.Write("Phone: ");
+        //        string Phone = Console.ReadLine();
+        //        Console.Write("Street Number: ");
+        //        string streetNumber = Console.ReadLine();
+        //        Console.Write("Street: ");
+        //        string street = Console.ReadLine();
+        //        Console.Write("City: ");
+        //        string city = Console.ReadLine();
+        //        Console.Write("State: ");
+        //        string state = Console.ReadLine();
+
+        //        // 3. 组合数据
+        //        string fullName = $"{firstName} {lastName}";
+        //        string fullAddress = $"{streetNumber} {street}, {city}, {state}";
+
+        //        // 格式: Id|Password|Name|Address|Email|Phone
+        //        string patientData = $"{newPatientId}|{Password}|{fullName}|{fullAddress}|{Email}|{Phone}";
+
+        //        // 4. 写入文件
+        //        File.WriteAllText(patientFilePath, patientData);
+
+        //        // 5. 显示成功信息
+        //        Console.ForegroundColor = ConsoleColor.Green;
+        //        Console.WriteLine($"\n{fullName} added to the system!"); //
+        //        Console.ResetColor();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Console.ForegroundColor = ConsoleColor.Red;
+        //        Console.WriteLine($"\nAn error occurred while adding the patient: {ex.Message}");
+        //        Console.ResetColor();
+        //    }
+
+
+        //    Console.ReadLine();
+        //}
+
+
+
+        // 文件: Admin.cs
 
         private void AddPatient()
         {
-            Console.Clear();
+            // 1. 准备工作 (这部分不变)
+            var labels = new string[]
+            {
+        "First Name", "Last Name", "Password", "Email", "Phone",
+        "Street Number", "Street", "City", "State"
+            };
+            var values = new string[labels.Length];
+            for (int i = 0; i < values.Length; i++) values[i] = "";
 
-            Console.WriteLine("┌────────────────────────────────────────┐");
-            Console.WriteLine("|                                        |");
-            Console.WriteLine("|   DOTNET Hospital Management System    |");
-            Console.WriteLine("|--------------------------------------- |");
-            Console.WriteLine("|              Administrator Menu        | ");
-            Console.WriteLine("└────────────────────────────────────────┘ ");
-            Console.WriteLine();
+            int currentField = 0;
+            string errorMessage = "";
+            ConsoleKeyInfo keyInfo;
 
+            // 2. 主循环
+            while (true)
+            {
+                // a) 绘制界面
+                Console.Clear();
+               
 
+                Console.WriteLine("┌────────────────────────────────────────┐");
+                Console.WriteLine("|                                        |");
+                Console.WriteLine("|   DOTNET Hospital Management System    |");
+                Console.WriteLine("|--------------------------------------- |");
+                Console.WriteLine("|              Administrator Menu        | ");
+                Console.WriteLine("└────────────────────────────────────────┘ ");
+                Console.WriteLine();
 
+                Console.WriteLine("Use UP/DOWN arrows to switch. Press ENTER to submit when done.");
+
+                if (!string.IsNullOrEmpty(errorMessage))
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine(errorMessage);
+                    Console.ResetColor();
+                }
+
+                int formTop = Console.CursorTop;
+                int labelWidth = 15;
+
+                for (int i = 0; i < labels.Length; i++)
+                {
+                    Console.SetCursorPosition(0, formTop + i);
+
+                    // 【改动1】我们删除了在这里打印 ">" 的代码
+
+                    string displayValue = (i == 2) ? new string('*', values[i].Length) : values[i];
+                    Console.Write($"{labels[i].PadRight(labelWidth)}: {displayValue}");
+                }
+
+                // b) 定位光标 (不变)
+                Console.SetCursorPosition(labelWidth + 2 + values[currentField].Length, formTop + currentField);
+
+                // c) 读取按键 (不变)
+                keyInfo = Console.ReadKey(true);
+
+                // d) 处理按键
+                if (keyInfo.Key == ConsoleKey.Enter)
+                {
+                    // 【改动2】在提交前进行验证
+                    bool allFieldsFilled = true;
+                    foreach (string value in values)
+                    {
+                        if (string.IsNullOrWhiteSpace(value))
+                        {
+                            allFieldsFilled = false; // 发现一个未填写的字段
+                            break;
+                        }
+                    }
+
+                    if (allFieldsFilled)
+                    {
+                        break; // 所有字段都已填写，跳出循环，提交表单！
+                    }
+                    else
+                    {
+                        // 如果有字段未填写，设置错误信息并继续循环
+                        errorMessage = "All fields are required. Please fill in the missing information.";
+                        continue;
+                    }
+                }
+                else if (keyInfo.Key == ConsoleKey.UpArrow)
+                {
+                    currentField = (currentField == 0) ? labels.Length - 1 : currentField - 1;
+                }
+                else if (keyInfo.Key == ConsoleKey.DownArrow)
+                {
+                    currentField = (currentField == labels.Length - 1) ? 0 : currentField + 1;
+                }
+                else if (keyInfo.Key == ConsoleKey.Backspace)
+                {
+                    if (values[currentField].Length > 0)
+                    {
+                        values[currentField] = values[currentField].Substring(0, values[currentField].Length - 1);
+                    }
+                }
+                else if (!char.IsControl(keyInfo.KeyChar))
+                {
+                    values[currentField] += keyInfo.KeyChar;
+                }
+
+                
+            } // 循环结束
+            Console.SetCursorPosition(0, Console.CursorTop + 2);
 
             try
             {
-                // 1. 自动生成一个唯一的、随机的 Patient ID
+                // a) 从values数组中提取数据
+                string firstName = values[0];
+                string lastName = values[1];
+                string password = values[2];
+                string email = values[3];
+                string phone = values[4];
+                string streetNumber = values[5];
+                string street = values[6];
+                string city = values[7];
+                string state = values[8];
+
+                // b) 【你的要求】随机生成唯一的病人ID
                 string newPatientId;
                 string patientFilePath;
                 Random rand = new Random();
                 do
                 {
-                    newPatientId = rand.Next(12451, 25000).ToString();
+                    newPatientId = rand.Next(10000, 99999999).ToString();
                     patientFilePath = Path.Combine(AppContext.BaseDirectory, "Data", "Patients", $"{newPatientId}.txt");
                 } while (File.Exists(patientFilePath));
 
-                // 2. 依次获取病人信息 (使用基础的 Console.ReadLine)
-                Console.Write("First Name: ");
-                string firstName = Console.ReadLine();
-                Console.Write("Last Name: ");
-                string lastName = Console.ReadLine();
-                Console.Write("Password: ");
-                string Password = Utils.GetMaskedPasswordInput();
-                Console.Write("Email: ");
-                string Email = Console.ReadLine();
-                Console.Write("Phone: ");
-                string Phone = Console.ReadLine();
-                Console.Write("Street Number: ");
-                string streetNumber = Console.ReadLine();
-                Console.Write("Street: ");
-                string street = Console.ReadLine();
-                Console.Write("City: ");
-                string city = Console.ReadLine();
-                Console.Write("State: ");
-                string state = Console.ReadLine();
-
-                // 3. 组合数据
+                // c) 组合数据
                 string fullName = $"{firstName} {lastName}";
                 string fullAddress = $"{streetNumber} {street}, {city}, {state}";
+                string patientData = $"{newPatientId}|{password}|{fullName}|{fullAddress}|{email}|{phone}";
 
-                // 格式: Id|Password|Name|Address|Email|Phone
-                string patientData = $"{newPatientId}|{Password}|{fullName}|{fullAddress}|{Email}|{Phone}";
-
-                // 4. 写入文件
+                // d) 写入文件
                 File.WriteAllText(patientFilePath, patientData);
 
-                // 5. 显示成功信息
+                // e) 【你的要求】显示成功信息
                 Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine($"\n{fullName} added to the system!"); //
+                Console.WriteLine($"\nPatient {fullName} added to the system!");
                 Console.ResetColor();
             }
             catch (Exception ex)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine($"\nAn error occurred while adding the patient: {ex.Message}");
+                Console.WriteLine($"\nAn error occurred: {ex.Message}");
                 Console.ResetColor();
             }
 
-            
+            Console.WriteLine("\nPress <Enter> to return to the menu.");
             Console.ReadLine();
         }
-
+            // 3. 循环结束后，处理并保存数据 (这部分逻辑不变)
+            // ... (代码省略) ...
         
 
 

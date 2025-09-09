@@ -9,7 +9,13 @@ namespace HospitalApp
 {
     internal static class Utils
     {
-
+        
+        public class FormField
+        {
+            public string Label { get; set; }   // 字段的标签，如 "ID"
+            public string Value { get; set; }   // 用户输入的值
+            public bool IsPassword { get; set; } // 这个字段是不是密码
+        }
 
 
 
@@ -63,6 +69,12 @@ namespace HospitalApp
             }
             return Password;
         }
+
+
+
+        
+
+
 
 
 

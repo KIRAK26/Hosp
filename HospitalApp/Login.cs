@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using System.Runtime.CompilerServices;
+using static HospitalApp.Utils;
 
 namespace HospitalApp
 {
@@ -15,58 +16,95 @@ namespace HospitalApp
         private string? Id, Password;
 
 
+        // 文件: Login.cs
+
         public void LoginMenu()
-        { //String myID = "12356";
-          //String myPassword = "Luo2241";
-          //string masked = new string('*', myPassword.Length);
+        {
+            var values = new string[] { "", "" }; // values[0] 存ID, values[1] 存Password
+            int currentField = 0; // 0代表ID, 1代表Password
+            ConsoleKeyInfo keyInfo;
+            int formTop;
 
-            //This is login page 
-            // alt + 196 to draw the heavier solid line 
 
-            
-            Console.WriteLine("┌────────────────────────────────────────┐");
-            Console.WriteLine("|                                        |");
-            Console.WriteLine("|   DOTNET Hospital Management System    |");
-            Console.WriteLine("|--------------------------------------- |");
-            Console.WriteLine("|                 Login                  | ");
-            Console.WriteLine("└────────────────────────────────────────┘ ");
-            Console.WriteLine("");
-            Console.WriteLine("");
 
-            Console.WriteLine("BaseDir = " + AppContext.BaseDirectory);
-
-            try
+            // 2. 主循环
+            while (true)
             {
-                Console.Write("ID: ");
-                Id = Console.ReadLine(); 
-                if (string.IsNullOrWhiteSpace(Id))
-                {
-                    throw new Exception("The ID cannot be empty!");
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-                Console.WriteLine("Press <Enter> to try again!");
-                Console.ReadKey();
+                // a) 绘制界面
                 Console.Clear();
-                LoginMenu();
-                return; 
-            }
+                Console.WriteLine("┌────────────────────────────────────────┐");
+                Console.WriteLine("|    DOTNET Hospital Management System   |");
+                Console.WriteLine("|----------------------------------------|");
+                Console.WriteLine("|                  Login                 |");
+                Console.WriteLine("└────────────────────────────────────────┘");
+                Console.WriteLine("\nUse UP/DOWN arrows to switch fields. Press ENTER to login.");
 
-            Console.Write("Password: ");
-            Password = Utils.GetMaskedPasswordInput();
+                 formTop = Console.CursorTop;
+                int inputLeftPosition = 11; // "Password : ".Length
+
+                // 画ID行
+                Console.SetCursorPosition(0, formTop);
+                Console.Write($"ID       : {values[0]}");
+
+                // 画Password行
+                Console.SetCursorPosition(0, formTop + 1);
+                Console.Write($"Password : {new string('*', values[1].Length)}");
+
+                // 【关键改动 2】把光标精确定位到当前输入框的末尾
+                Console.SetCursorPosition(inputLeftPosition + values[currentField].Length, formTop + currentField);
+
+                // b) 读取用户按键
+                keyInfo = Console.ReadKey(true);
+
+                // c) 处理按键
+                if (keyInfo.Key == ConsoleKey.Enter)
+                {
+                    break; // 按回车，跳出循环去登录
+                }
+                else if (keyInfo.Key == ConsoleKey.UpArrow)
+                {
+                    currentField = 0;
+                }
+                else if (keyInfo.Key == ConsoleKey.DownArrow)
+                {
+                    currentField = 1;
+                }
+                else if (keyInfo.Key == ConsoleKey.Backspace)
+                {
+                    if (values[currentField].Length > 0)
+                    {
+                        values[currentField] = values[currentField].Substring(0, values[currentField].Length - 1);
+                    }
+                }
+                else if (!char.IsControl(keyInfo.KeyChar))
+                {
+                    values[currentField] += keyInfo.KeyChar;
+                }
+            } // 循环结束
+
+            // 3. 循环结束后，处理登录
+            this.Id = values[0];
+            this.Password = values[1];
+
+            Console.SetCursorPosition(0, formTop + 4);
+
+            // 简单的非空验证
+            if (string.IsNullOrWhiteSpace(this.Id) || string.IsNullOrWhiteSpace(this.Password))
+            {
+                Console.WriteLine("ID or Password cannot be empty. Press <Enter> to try again.");
+                Console.ReadLine();
+                LoginMenu();
+                return;
+            }
 
             HandleUserLogin();
-
         }
-
 
 
         //它的作用就是拼接出某个角色的用户文件的绝对路径。
 
         //这样你不用每次都手写 Path.Combine(AppContext.BaseDirectory, "Data", "Patients", fileName)，只要调用 DataPathOf(...) 就行。
-       private static string DataPathOf(string roleFolder, string fileName)
+        private static string DataPathOf(string roleFolder, string fileName)
     => Path.Combine(AppContext.BaseDirectory, "Data", roleFolder, fileName);
 
 

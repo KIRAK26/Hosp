@@ -3,24 +3,12 @@
   "WorkspaceRootPath": "C:\\Users\\xluo4\\Desktop\\Semster 5\\.NET Application Development\\Assignment1\\HospitalApp\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{4FB55388-548B-4657-A2CB-BCA87918C209}|HospitalApp\\HospitalApp.csproj|c:\\users\\xluo4\\desktop\\semster 5\\.net application development\\assignment1\\hospitalapp\\hospitalapp\\patient.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{4FB55388-548B-4657-A2CB-BCA87918C209}|HospitalApp\\HospitalApp.csproj|solutionrelative:hospitalapp\\patient.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{4FB55388-548B-4657-A2CB-BCA87918C209}|HospitalApp\\HospitalApp.csproj|c:\\users\\xluo4\\desktop\\semster 5\\.net application development\\assignment1\\hospitalapp\\hospitalapp\\admin.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4FB55388-548B-4657-A2CB-BCA87918C209}|HospitalApp\\HospitalApp.csproj|solutionrelative:hospitalapp\\admin.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{4FB55388-548B-4657-A2CB-BCA87918C209}|HospitalApp\\HospitalApp.csproj|c:\\users\\xluo4\\desktop\\semster 5\\.net application development\\assignment1\\hospitalapp\\hospitalapp\\doctor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{4FB55388-548B-4657-A2CB-BCA87918C209}|HospitalApp\\HospitalApp.csproj|solutionrelative:hospitalapp\\doctor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{4FB55388-548B-4657-A2CB-BCA87918C209}|HospitalApp\\HospitalApp.csproj|c:\\users\\xluo4\\desktop\\semster 5\\.net application development\\assignment1\\hospitalapp\\hospitalapp\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{4FB55388-548B-4657-A2CB-BCA87918C209}|HospitalApp\\HospitalApp.csproj|solutionrelative:hospitalapp\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{4FB55388-548B-4657-A2CB-BCA87918C209}|HospitalApp\\HospitalApp.csproj|c:\\users\\xluo4\\desktop\\semster 5\\.net application development\\assignment1\\hospitalapp\\hospitalapp\\personaldetails.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{4FB55388-548B-4657-A2CB-BCA87918C209}|HospitalApp\\HospitalApp.csproj|solutionrelative:hospitalapp\\personaldetails.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{4FB55388-548B-4657-A2CB-BCA87918C209}|HospitalApp\\HospitalApp.csproj|c:\\users\\xluo4\\desktop\\semster 5\\.net application development\\assignment1\\hospitalapp\\hospitalapp\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{4FB55388-548B-4657-A2CB-BCA87918C209}|HospitalApp\\HospitalApp.csproj|solutionrelative:hospitalapp\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{4FB55388-548B-4657-A2CB-BCA87918C209}|HospitalApp\\HospitalApp.csproj|c:\\users\\xluo4\\desktop\\semster 5\\.net application development\\assignment1\\hospitalapp\\hospitalapp\\login.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -31,8 +19,20 @@
       "RelativeMoniker": "D:0:0:{4FB55388-548B-4657-A2CB-BCA87918C209}|HospitalApp\\HospitalApp.csproj|solutionrelative:hospitalapp\\utils.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{4FB55388-548B-4657-A2CB-BCA87918C209}|HospitalApp\\HospitalApp.csproj|c:\\users\\xluo4\\desktop\\semster 5\\.net application development\\assignment1\\hospitalapp\\hospitalapp\\admin.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{4FB55388-548B-4657-A2CB-BCA87918C209}|HospitalApp\\HospitalApp.csproj|solutionrelative:hospitalapp\\admin.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{4FB55388-548B-4657-A2CB-BCA87918C209}|HospitalApp\\HospitalApp.csproj|c:\\users\\xluo4\\desktop\\semster 5\\.net application development\\assignment1\\hospitalapp\\hospitalapp\\personaldetails.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4FB55388-548B-4657-A2CB-BCA87918C209}|HospitalApp\\HospitalApp.csproj|solutionrelative:hospitalapp\\personaldetails.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4FB55388-548B-4657-A2CB-BCA87918C209}|HospitalApp\\HospitalApp.csproj|c:\\users\\xluo4\\desktop\\semster 5\\.net application development\\assignment1\\hospitalapp\\hospitalapp\\patient.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4FB55388-548B-4657-A2CB-BCA87918C209}|HospitalApp\\HospitalApp.csproj|solutionrelative:hospitalapp\\patient.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4FB55388-548B-4657-A2CB-BCA87918C209}|HospitalApp\\HospitalApp.csproj|c:\\users\\xluo4\\desktop\\semster 5\\.net application development\\assignment1\\hospitalapp\\hospitalapp\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4FB55388-548B-4657-A2CB-BCA87918C209}|HospitalApp\\HospitalApp.csproj|solutionrelative:hospitalapp\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4FB55388-548B-4657-A2CB-BCA87918C209}|HospitalApp\\HospitalApp.csproj|c:\\users\\xluo4\\desktop\\semster 5\\.net application development\\assignment1\\hospitalapp\\hospitalapp\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4FB55388-548B-4657-A2CB-BCA87918C209}|HospitalApp\\HospitalApp.csproj|solutionrelative:hospitalapp\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -42,17 +42,17 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 7,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 6,
               "Title": "User.cs",
               "DocumentMoniker": "C:\\Users\\xluo4\\Desktop\\Semster 5\\.NET Application Development\\Assignment1\\HospitalApp\\HospitalApp\\User.cs",
               "RelativeDocumentMoniker": "HospitalApp\\User.cs",
               "ToolTip": "C:\\Users\\xluo4\\Desktop\\Semster 5\\.NET Application Development\\Assignment1\\HospitalApp\\HospitalApp\\User.cs",
               "RelativeToolTip": "HospitalApp\\User.cs",
-              "ViewState": "AgIAAEcAAAAAAAAAAAAgwE8AAAAIAAAAAAAAAA==",
+              "ViewState": "AgIAAEAAAAAAAAAAAAAQwA0AAAAnAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-09-02T07:18:44.325Z",
               "IsPinned": true,
@@ -60,13 +60,13 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 5,
               "Title": "Patient.cs",
               "DocumentMoniker": "C:\\Users\\xluo4\\Desktop\\Semster 5\\.NET Application Development\\Assignment1\\HospitalApp\\HospitalApp\\Patient.cs",
               "RelativeDocumentMoniker": "HospitalApp\\Patient.cs",
-              "ToolTip": "C:\\Users\\xluo4\\Desktop\\Semster 5\\.NET Application Development\\Assignment1\\HospitalApp\\HospitalApp\\Patient.cs*",
-              "RelativeToolTip": "HospitalApp\\Patient.cs*",
-              "ViewState": "AgIAAAUBAAAAAAAAAAAIwBQBAAARAAAAAAAAAA==",
+              "ToolTip": "C:\\Users\\xluo4\\Desktop\\Semster 5\\.NET Application Development\\Assignment1\\HospitalApp\\HospitalApp\\Patient.cs",
+              "RelativeToolTip": "HospitalApp\\Patient.cs",
+              "ViewState": "AgIAAJwAAAAAAAAAAAAcwJEAAAAsAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-08-21T00:57:37.817Z",
               "IsPinned": true,
@@ -74,13 +74,13 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 2,
               "Title": "Login.cs",
               "DocumentMoniker": "C:\\Users\\xluo4\\Desktop\\Semster 5\\.NET Application Development\\Assignment1\\HospitalApp\\HospitalApp\\Login.cs",
               "RelativeDocumentMoniker": "HospitalApp\\Login.cs",
               "ToolTip": "C:\\Users\\xluo4\\Desktop\\Semster 5\\.NET Application Development\\Assignment1\\HospitalApp\\HospitalApp\\Login.cs",
               "RelativeToolTip": "HospitalApp\\Login.cs",
-              "ViewState": "AgIAAKgAAAAAAAAAAAAAwBQBAAAFAAAAAAAAAA==",
+              "ViewState": "AgIAADABAAAAAAAAAAAwwF0AAABhAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-09-06T05:27:18.357Z",
               "IsPinned": true,
@@ -88,13 +88,13 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 3,
               "Title": "Utils.cs",
               "DocumentMoniker": "C:\\Users\\xluo4\\Desktop\\Semster 5\\.NET Application Development\\Assignment1\\HospitalApp\\HospitalApp\\Utils.cs",
               "RelativeDocumentMoniker": "HospitalApp\\Utils.cs",
               "ToolTip": "C:\\Users\\xluo4\\Desktop\\Semster 5\\.NET Application Development\\Assignment1\\HospitalApp\\HospitalApp\\Utils.cs",
               "RelativeToolTip": "HospitalApp\\Utils.cs",
-              "ViewState": "AgIAAHEAAAAAAAAAAAAIwIEAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAD0AAAAAAAAAAAAAAEoAAAAIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-09-06T03:58:59.787Z",
               "IsPinned": true,
@@ -114,13 +114,13 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 0,
               "Title": "Admin.cs",
               "DocumentMoniker": "C:\\Users\\xluo4\\Desktop\\Semster 5\\.NET Application Development\\Assignment1\\HospitalApp\\HospitalApp\\Admin.cs",
               "RelativeDocumentMoniker": "HospitalApp\\Admin.cs",
               "ToolTip": "C:\\Users\\xluo4\\Desktop\\Semster 5\\.NET Application Development\\Assignment1\\HospitalApp\\HospitalApp\\Admin.cs",
               "RelativeToolTip": "HospitalApp\\Admin.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAwCAAAAAAAAAAAAwBoCAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-08-21T00:57:43.003Z",
               "EditorCaption": ""
@@ -133,14 +133,14 @@
               "RelativeDocumentMoniker": "HospitalApp\\Doctor.cs",
               "ToolTip": "C:\\Users\\xluo4\\Desktop\\Semster 5\\.NET Application Development\\Assignment1\\HospitalApp\\HospitalApp\\Doctor.cs",
               "RelativeToolTip": "HospitalApp\\Doctor.cs",
-              "ViewState": "AgIAAE8BAAAAAAAAAAAUwKABAABMAAAAAAAAAA==",
+              "ViewState": "AgIAAL0AAAAAAAAAAAAIwEYBAAANAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-08-21T00:57:54.501Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 4,
               "Title": "PersonalDetails.cs",
               "DocumentMoniker": "C:\\Users\\xluo4\\Desktop\\Semster 5\\.NET Application Development\\Assignment1\\HospitalApp\\HospitalApp\\PersonalDetails.cs",
               "RelativeDocumentMoniker": "HospitalApp\\PersonalDetails.cs",
@@ -153,7 +153,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 7,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\xluo4\\Desktop\\Semster 5\\.NET Application Development\\Assignment1\\HospitalApp\\HospitalApp\\Program.cs",
               "RelativeDocumentMoniker": "HospitalApp\\Program.cs",
@@ -161,8 +161,7 @@
               "RelativeToolTip": "HospitalApp\\Program.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAeAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-01T10:25:09.377Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-09-01T10:25:09.377Z"
             }
           ]
         }
