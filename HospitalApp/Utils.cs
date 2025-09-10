@@ -21,6 +21,62 @@ namespace HospitalApp
 
 
 
+        public static void DisplayHeader(string title, string subtitle)
+        {
+            Console.Clear();
+            Console.WriteLine("┌────────────────────────────────────────┐");
+            Console.WriteLine("|    DOTNET Hospital Management System   |");
+            Console.WriteLine("|----------------------------------------|");
+
+            string content = title.Length > 36 ? title.Substring(0, 36) : title;
+            int padding = (38 - content.Length) / 2;
+            string formattedTitle = new string(' ', padding) + content;
+
+            Console.WriteLine($"| {formattedTitle.PadRight(38)} |");
+            Console.WriteLine("└────────────────────────────────────────┘");
+            Console.WriteLine();
+
+            // 打印副标题
+            Console.WriteLine(subtitle);
+            Console.WriteLine();
+        }
+
+
+
+        public static void DisplayHeader(string title, string instruction, string extraInfo)
+        {
+            Console.Clear();
+            Console.WriteLine("┌────────────────────────────────────────┐");
+            Console.WriteLine("|    DOTNET Hospital Management System   |");
+            Console.WriteLine("|----------------------------------------|");
+
+            string content = title.Length > 36 ? title.Substring(0, 36) : title;
+            int padding = (38 - content.Length) / 2;
+            string formattedTitle = new string(' ', padding) + content;
+
+            Console.WriteLine($"| {formattedTitle.PadRight(38)} |");
+            Console.WriteLine("└────────────────────────────────────────┘");
+            Console.WriteLine();
+
+            // 打印指令
+            Console.WriteLine(instruction);
+
+            // 如果动态信息不为空，才打印
+            if (!string.IsNullOrEmpty(extraInfo))
+            {
+                Console.WriteLine(extraInfo);
+            }
+            Console.WriteLine();
+        }
+
+
+
+
+
+
+
+
+
 
         public static void PrintPersonDetails(PersonalDetails person)
         {
@@ -71,8 +127,39 @@ namespace HospitalApp
         }
 
 
+        public static T FindUserById<T>(string userId) where T : User
+        {
+            // 根据类型 T 的名字，自动决定要去哪个文件夹里找
+            // 比如 T 是 "Patient"，roleFolder 就是 "Patients"
+            string roleFolder = typeof(T).Name + "s";
+            string filePath = Path.Combine(AppContext.BaseDirectory, "Data", roleFolder, $"{userId}.txt");
 
-        
+            if (!File.Exists(filePath))
+            {
+                return null; // 如果文件不存在，直接返回 null
+            }
+
+            try
+            {
+                string[] data = File.ReadAllLines(filePath)[0].Split('|');
+                if (data.Length >= 6)
+                {
+                    // 这是C#的一个高级功能，可以根据类型和构造函数参数动态创建对象
+                    object user = Activator.CreateInstance(typeof(T), data[0], data[1], data[2], data[3], data[4], data[5], roleFolder);
+                    return (T)user;
+                }
+            }
+            catch (Exception ex)
+            {
+                // 打印一个调试信息，方便我们知道哪里出错了
+                Console.WriteLine($"[DEBUG] 查找ID为 {userId} 的用户时出错: {ex.Message}");
+            }
+
+            return null; // 如果文件数据有问题或者发生异常，也返回 null
+        }
+
+
+
 
 
 

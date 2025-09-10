@@ -26,32 +26,34 @@ namespace HospitalApp
             int formTop;
 
 
+            String instructions = "Welcome to the Login ,Please Enter your password and ID ";
+            Utils.DisplayHeader("Login", instructions);
+            
+            Console.WriteLine("Use UP/DOWN arrows to switch fields. Press ENTER to login.");
+            Console.WriteLine();
 
+            formTop = Console.CursorTop;
+            int cursorPosition = 0;
             // 2. 主循环
             while (true)
             {
-                // a) 绘制界面
-                Console.Clear();
-                Console.WriteLine("┌────────────────────────────────────────┐");
-                Console.WriteLine("|    DOTNET Hospital Management System   |");
-                Console.WriteLine("|----------------------------------------|");
-                Console.WriteLine("|                  Login                 |");
-                Console.WriteLine("└────────────────────────────────────────┘");
-                Console.WriteLine("\nUse UP/DOWN arrows to switch fields. Press ENTER to login.");
+               
 
-                 formTop = Console.CursorTop;
+
+
+               
                 int inputLeftPosition = 11; // "Password : ".Length
 
                 // 画ID行
                 Console.SetCursorPosition(0, formTop);
-                Console.Write($"ID       : {values[0]}");
+                Console.Write($"ID       : {values[0]}".PadRight(Console.WindowWidth - 1));
 
                 // 画Password行
                 Console.SetCursorPosition(0, formTop + 1);
-                Console.Write($"Password : {new string('*', values[1].Length)}");
+                Console.Write($"Password : {new string('*', values[1].Length)}".PadRight(Console.WindowWidth - 1));
 
                 // 【关键改动 2】把光标精确定位到当前输入框的末尾
-                Console.SetCursorPosition(inputLeftPosition + values[currentField].Length, formTop + currentField);
+                Console.SetCursorPosition(inputLeftPosition + cursorPosition, formTop + currentField);
 
                 // b) 读取用户按键
                 keyInfo = Console.ReadKey(true);
@@ -64,21 +66,53 @@ namespace HospitalApp
                 else if (keyInfo.Key == ConsoleKey.UpArrow)
                 {
                     currentField = 0;
+                    cursorPosition = values[currentField].Length;
                 }
                 else if (keyInfo.Key == ConsoleKey.DownArrow)
                 {
                     currentField = 1;
+                    cursorPosition = values[currentField].Length;
+                }
+
+                else if (keyInfo.Key == ConsoleKey.LeftArrow)
+                {
+                    if (cursorPosition > 0)
+                    {
+                        cursorPosition--;
+                    }
+                }
+                else if (keyInfo.Key == ConsoleKey.RightArrow)
+                {
+                    if (cursorPosition < values[currentField].Length)
+                    {
+                        cursorPosition++;
+                    }
                 }
                 else if (keyInfo.Key == ConsoleKey.Backspace)
                 {
-                    if (values[currentField].Length > 0)
+                    if (cursorPosition > 0)
                     {
-                        values[currentField] = values[currentField].Substring(0, values[currentField].Length - 1);
+                        // 从光标前一个位置开始，删除1个字符
+                        values[currentField] = values[currentField].Remove(cursorPosition - 1, 1);
+                        cursorPosition--; // 光标位置也要跟着向左移动
                     }
                 }
+                else if (keyInfo.Key == ConsoleKey.Delete)
+                {
+                    if (cursorPosition < values[currentField].Length)
+                    {
+                        // 从光标当前位置开始，删除1个字符
+                        values[currentField] = values[currentField].Remove(cursorPosition, 1);
+                        // 光标位置不变，因为后面的字符会补上来
+                    }
+                }
+
+
+
                 else if (!char.IsControl(keyInfo.KeyChar))
                 {
-                    values[currentField] += keyInfo.KeyChar;
+                    values[currentField] = values[currentField].Insert(cursorPosition, keyInfo.KeyChar.ToString());
+                    cursorPosition++; // 光标向右移动
                 }
             } // 循环结束
 

@@ -43,7 +43,7 @@ namespace HospitalApp.Data
 
         ~Appointment()
         {
-            Console.WriteLine("Appointment object destroyed and clearing memory");
+            Console.WriteLine("Destoryed Appointment object and clearing memory");
             GC.Collect();
 
         }

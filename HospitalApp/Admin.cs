@@ -28,20 +28,16 @@ namespace HospitalApp
         private void ListsAllDoctors()
         {
 
-            Console.Clear();
+           
+            
 
-            Console.WriteLine("┌────────────────────────────────────────┐");
-            Console.WriteLine("|                                        |");
-            Console.WriteLine("|   DOTNET Hospital Management System    |");
-            Console.WriteLine("|--------------------------------------- |");
-            Console.WriteLine("|              Administrator Menu        | ");
-            Console.WriteLine("└────────────────────────────────────────┘ ");
-            Console.WriteLine();
+
+            String instructions = "All doctors registered to the DOTNET Hospital Management System";
+            Utils.DisplayHeader("All Doctors", instructions);
 
 
 
-            Console.WriteLine("All doctors registered to the DOTNET Hospital Management System"); // [cite: 269]
-            Console.WriteLine();
+            
 
             // 创建一个列表来存放所有找到的医生对象
             var allDoctors = new List<Doctor>();
@@ -104,40 +100,25 @@ namespace HospitalApp
         {
             string errorMessage = "";
             while (true) {
-                Console.Clear();
-
-                Console.WriteLine("┌────────────────────────────────────────┐");
-                Console.WriteLine("|                                        |");
-                Console.WriteLine("|   DOTNET Hospital Management System    |");
-                Console.WriteLine("|--------------------------------------- |");
-                Console.WriteLine("|              Administrator Menu        | ");
-                Console.WriteLine("└────────────────────────────────────────┘ ");
-                Console.WriteLine();
+              
 
 
+                //Console.WriteLine("This is to check Doctor's details ");
 
 
-                Console.WriteLine("This is to check Doctor's details ");
+                string whoMenu = "Administrator Menu";
+                String insructions = "Enter the ID of the doctor to check";
 
-
+                Utils.DisplayHeader(whoMenu, insructions, errorMessage);
                 
-                Console.WriteLine("Enter the ID of the Doctor to check (or type 'exit' to return).");
 
                 // 如果有错误信息，就显示它
-                if (!string.IsNullOrEmpty(errorMessage))
-                {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine(errorMessage);
-                    Console.ResetColor();
-                }
+              
 
                 Console.Write("> ");
                 string doctorId = Console.ReadLine();
 
-                if (doctorId.ToLower() == "exit")
-                {
-                    break;
-                }
+               
 
                 if (string.IsNullOrWhiteSpace(doctorId))
                 {
@@ -148,18 +129,19 @@ namespace HospitalApp
                 try
                 {
                     // 【核心改动】这里的逻辑现在是查找【医生】
-                    string doctorPath = Path.Combine(AppContext.BaseDirectory, "Data", "Doctors", $"{doctorId}.txt");
+                    Doctor doctor = Utils.FindUserById<Doctor>(doctorId);
 
-                    if (File.Exists(doctorPath))
+
+                    if (doctor != null)
                     {
-                        // 1. 读取文件并创建 Doctor 对象
-                        string[] doctorData = File.ReadAllLines(doctorPath)[0].Split('|');
-                        Doctor doctor = new Doctor(doctorData[0], doctorData[1], doctorData[2], doctorData[3], doctorData[4], doctorData[5], "Doctors");
+                       
+                   
+                       
 
-                        // 2. 调用我们为医生专门创建的打印方法
+                        Utils.DisplayHeader($"Doctor Details", $"Details for {doctor.Name} ", "");
                         Utils.PrintPersonDetails(doctor);
 
-                        // 任务完成，退出循环
+                        
                         break;
                     }
                     else
@@ -176,6 +158,8 @@ namespace HospitalApp
                 }
             } // while 循环结束
 
+         
+
             Console.WriteLine("\nPress <Enter> to return to the menu.");
             Console.ReadLine();
         }
@@ -191,17 +175,12 @@ namespace HospitalApp
 
         private void ListAllPatients()
         {
-            Console.Clear();
+            
 
-            Console.WriteLine("┌────────────────────────────────────────┐");
-            Console.WriteLine("|                                        |");
-            Console.WriteLine("|   DOTNET Hospital Management System    |");
-            Console.WriteLine("|--------------------------------------- |");
-            Console.WriteLine("|              Administrator Menu        | ");
-            Console.WriteLine("└────────────────────────────────────────┘ ");
-            Console.WriteLine();
+            
 
-
+            String instructions = "All patients registered to the DOTNET Hospital Management System";
+            Utils.DisplayHeader("All Patients", instructions);
 
 
             Console.WriteLine("This is to check Patients' details ");
@@ -274,38 +253,23 @@ namespace HospitalApp
         private void CheckPatientsDetails()
         {
             string errorMessage = "";
+            
 
             while (true)
             {
-                Console.Clear();
+               
+                string whoMenu = "Administrator Menu";
+                String insructions = "Enter the ID of the patient to check";
 
-                Console.WriteLine("┌────────────────────────────────────────┐");
-                Console.WriteLine("|                                        |");
-                Console.WriteLine("|   DOTNET Hospital Management System    |");
-                Console.WriteLine("|--------------------------------------- |");
-                Console.WriteLine("|              Administrator Menu        | ");
-                Console.WriteLine("└────────────────────────────────────────┘ ");
-                Console.WriteLine();
-
-
-                Console.WriteLine("Enter the ID of the patient to check (or type 'exit' to return).");
-
+                Utils.DisplayHeader(whoMenu, insructions, errorMessage);
                 // 如果有错误信息，就显示它
-                if (!string.IsNullOrEmpty(errorMessage))
-                {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine(errorMessage);
-                    Console.ResetColor();
-                }
+               
 
                 // 2. 获取用户输入
                 Console.Write("> ");
                 string patientId = Console.ReadLine();
 
-                if (patientId.ToLower() == "exit")
-                {
-                    break; // 退出循环
-                }
+                
 
                 if (string.IsNullOrWhiteSpace(patientId))
                 {
@@ -316,34 +280,24 @@ namespace HospitalApp
                 try
                 {
                     // 3. 核心逻辑：这部分和 Doctor.cs 里的版本完全一样
-                    string patientPath = Path.Combine(AppContext.BaseDirectory, "Data", "Patients", $"{patientId}.txt");
+                    Patient patient = Utils.FindUserById<Patient>(patientId);
 
-                    if (File.Exists(patientPath))
+                    if (patient != null)
                     {
                         // 创建 Patient 对象
-                        string[] patientData = File.ReadAllLines(patientPath)[0].Split('|');
-                        Patient patient = new Patient(patientData[0], patientData[1], patientData[2], patientData[3], patientData[4], patientData[5], "Patients");
-
+                     
                         Doctor assignedDoctor = null; // 先准备一个空的医生对象
 
-                        // 查找病人关联的医生
                         string registeredDoctorPath = Path.Combine(AppContext.BaseDirectory, "Data", "Patients", "RegisteredDoctors", $"{patient.Id}.txt");
                         if (File.Exists(registeredDoctorPath))
                         {
                             string doctorId = File.ReadAllText(registeredDoctorPath).Trim();
-                            string doctorPath = Path.Combine(AppContext.BaseDirectory, "Data", "Doctors", $"{doctorId}.txt");
-                            if (File.Exists(doctorPath))
-                            {
-                                string[] doctorData = File.ReadAllLines(doctorPath)[0].Split('|');
-                                assignedDoctor = new Doctor(doctorData[0], doctorData[1], doctorData[2], doctorData[3], doctorData[4], doctorData[5], "Doctors");
-                            }
+                            // ⭐ 核心改动 2：再次使用通用方法找医生
+                            assignedDoctor = Utils.FindUserById<Doctor>(doctorId);
                         }
 
-                        // 4. 调用我们早已写好的、完全可重用的 Utils 方法来打印结果
-                        // 假设你的Utils方法叫 PrintSinglePatientDetails
+                        Utils.DisplayHeader("Patient Details", $"Details for {patient.Name} ({patient.Id})", "");
                         Utils.PrintPatientDetails(patient, assignedDoctor);
-
-                        // 任务完成，退出循环
                         break;
                     }
                     else
@@ -360,99 +314,16 @@ namespace HospitalApp
                 }
             } // while 循环结束
 
+
+        
+
             // 5. 结束交互
             Console.WriteLine("\nPress <Enter> to return to the menu.");
             Console.ReadLine();
-
-
-
-
-
-
         }
 
 
 
-
-        //private void AddDoctor()
-        //{
-        //    Console.Clear();
-
-        //    Console.WriteLine("┌────────────────────────────────────────┐");
-        //    Console.WriteLine("|                                        |");
-        //    Console.WriteLine("|   DOTNET Hospital Management System    |");
-        //    Console.WriteLine("|--------------------------------------- |");
-        //    Console.WriteLine("|              Administrator Menu        | ");
-        //    Console.WriteLine("└────────────────────────────────────────┘ ");
-        //    Console.WriteLine();
-
-
-
-
-        //    Console.WriteLine("This is to add a new Doctor ");
-
-
-
-        //    try
-        //    {
-        //        // 1. Generate a unique, random Doctor ID
-        //        string newDoctorId;
-        //        string doctorFilePath; // Changed variable Name for clarity
-        //        Random rand = new Random();
-        //        do
-        //        {
-        //            // The ID generation logic is identical
-        //            newDoctorId = rand.Next(13339, 20000).ToString();
-        //            // 【Key Change】Save to the "Doctors" folder instead of "Patients"
-        //            doctorFilePath = Path.Combine(AppContext.BaseDirectory, "Data", "Doctors", $"{newDoctorId}.txt");
-        //        } while (File.Exists(doctorFilePath));
-
-        //        // 2. Gather the doctor's information
-        //        Console.Write("First Name: ");
-        //        string firstName = Console.ReadLine();
-        //        Console.Write("Last Name: ");
-        //        string lastName = Console.ReadLine();
-        //        Console.Write("Password: ");
-        //        string Password = Utils.GetMaskedPasswordInput(); // Reuse the Password utility
-        //        Console.Write("Email: ");
-        //        string Email = Console.ReadLine();
-        //        Console.Write("Phone: ");
-        //        string Phone = Console.ReadLine();
-        //        Console.Write("Street Number: ");
-        //        string streetNumber = Console.ReadLine();
-        //        Console.Write("Street: ");
-        //        string street = Console.ReadLine();
-        //        Console.Write("City: ");
-        //        string city = Console.ReadLine();
-        //        Console.Write("State: ");
-        //        string state = Console.ReadLine();
-
-        //        // 3. Combine the data into the standard format
-        //        string fullName = $"{firstName} {lastName}";
-        //        string fullAddress = $"{streetNumber} {street}, {city}, {state}";
-
-        //        // The data format is the same for doctors and patients
-        //        string doctorData = $"{newDoctorId}|{Password}|{fullName}|{fullAddress}|{Email}|{Phone}";
-
-        //        // 4. Write the data to the new file
-        //        File.WriteAllText(doctorFilePath, doctorData);
-
-        //        // 5. Display the success message
-        //        Console.ForegroundColor = ConsoleColor.Green;
-        //        // 【Key Change】Update the success message
-        //        Console.WriteLine($"\nDoctor {fullName} added to the system!");
-        //        Console.ResetColor();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Console.ForegroundColor = ConsoleColor.Red;
-        //        Console.WriteLine($"\nAn error occurred while adding the doctor: {ex.Message}");
-        //        Console.ResetColor();
-        //    }
-
-        //    Console.WriteLine("\nPress <Enter> to return to the menu.");
-        //    Console.ReadLine();
-        //}
 
 
         private void AddDoctor()
@@ -577,82 +448,6 @@ namespace HospitalApp
 
 
 
-        //private void AddPatient()
-        //{
-        //    Console.Clear();
-
-        //    Console.WriteLine("┌────────────────────────────────────────┐");
-        //    Console.WriteLine("|                                        |");
-        //    Console.WriteLine("|   DOTNET Hospital Management System    |");
-        //    Console.WriteLine("|--------------------------------------- |");
-        //    Console.WriteLine("|              Administrator Menu        | ");
-        //    Console.WriteLine("└────────────────────────────────────────┘ ");
-        //    Console.WriteLine();
-
-
-
-
-        //    try
-        //    {
-        //        // 1. 自动生成一个唯一的、随机的 Patient ID
-        //        string newPatientId;
-        //        string patientFilePath;
-        //        Random rand = new Random();
-        //        do
-        //        {
-        //            newPatientId = rand.Next(12451, 25000).ToString();
-        //            patientFilePath = Path.Combine(AppContext.BaseDirectory, "Data", "Patients", $"{newPatientId}.txt");
-        //        } while (File.Exists(patientFilePath));
-
-        //        // 2. 依次获取病人信息 (使用基础的 Console.ReadLine)
-        //        Console.Write("First Name: ");
-        //        string firstName = Console.ReadLine();
-        //        Console.Write("Last Name: ");
-        //        string lastName = Console.ReadLine();
-        //        Console.Write("Password: ");
-        //        string Password = Utils.GetMaskedPasswordInput();
-        //        Console.Write("Email: ");
-        //        string Email = Console.ReadLine();
-        //        Console.Write("Phone: ");
-        //        string Phone = Console.ReadLine();
-        //        Console.Write("Street Number: ");
-        //        string streetNumber = Console.ReadLine();
-        //        Console.Write("Street: ");
-        //        string street = Console.ReadLine();
-        //        Console.Write("City: ");
-        //        string city = Console.ReadLine();
-        //        Console.Write("State: ");
-        //        string state = Console.ReadLine();
-
-        //        // 3. 组合数据
-        //        string fullName = $"{firstName} {lastName}";
-        //        string fullAddress = $"{streetNumber} {street}, {city}, {state}";
-
-        //        // 格式: Id|Password|Name|Address|Email|Phone
-        //        string patientData = $"{newPatientId}|{Password}|{fullName}|{fullAddress}|{Email}|{Phone}";
-
-        //        // 4. 写入文件
-        //        File.WriteAllText(patientFilePath, patientData);
-
-        //        // 5. 显示成功信息
-        //        Console.ForegroundColor = ConsoleColor.Green;
-        //        Console.WriteLine($"\n{fullName} added to the system!"); //
-        //        Console.ResetColor();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Console.ForegroundColor = ConsoleColor.Red;
-        //        Console.WriteLine($"\nAn error occurred while adding the patient: {ex.Message}");
-        //        Console.ResetColor();
-        //    }
-
-
-        //    Console.ReadLine();
-        //}
-
-
-
-        // 文件: Admin.cs
 
         private void AddPatient()
         {
@@ -817,18 +612,12 @@ namespace HospitalApp
 
             while (true)
             {
-                Console.Clear();
-
-                Console.WriteLine("┌────────────────────────────────────────┐");
-                Console.WriteLine("|                                        |");
-                Console.WriteLine("|   DOTNET Hospital Management System    |");
-                Console.WriteLine("|--------------------------------------- |");
-                Console.WriteLine("|              Administrator Menu        | ");
-                Console.WriteLine("└────────────────────────────────────────┘ ");
-                Console.WriteLine();
+                
 
 
-                Console.WriteLine($"Welcome to DOTNET Hospital Management System {Name}");
+                String instructions = $"Welcome to DOTNET Hospital Management System {Name}";
+                Utils.DisplayHeader("Administrator", instructions);
+
 
                 foreach (string option in options)
                 {
@@ -914,6 +703,13 @@ namespace HospitalApp
 
 
 
+        }
+
+
+        ~Admin()
+        {
+            Console.WriteLine("Administrator object destroyed and clearing memory");
+            GC.Collect();
         }
 
 

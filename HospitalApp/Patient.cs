@@ -33,16 +33,11 @@ namespace HospitalApp
 
         public void Details()
         {
-            Console.Clear();
+            
 
-            Console.WriteLine("┌────────────────────────────────────────┐");
-            Console.WriteLine("|                                        |");
-            Console.WriteLine("|   DOTNET Hospital Management System    |");
-            Console.WriteLine("|--------------------------------------- |");
-            Console.WriteLine("|               My Details               | ");
-            Console.WriteLine("└────────────────────────────────────────┘ ");
-            Console.WriteLine();
-            Console.WriteLine($"{Name}'s Details");
+            String instructions = $"{Name}'s Details";
+            Utils.DisplayHeader("My Details", instructions);
+           
 
 
             Console.WriteLine();
@@ -57,53 +52,44 @@ namespace HospitalApp
      
         private void AssignedDoctor()
         {
-            Console.Clear();
+            
 
-            Console.WriteLine("┌────────────────────────────────────────┐");
-            Console.WriteLine("|                                        |");
-            Console.WriteLine("|   DOTNET Hospital Management System    |");
-            Console.WriteLine("|--------------------------------------- |");
-            Console.WriteLine("|               My Doctor                | ");
-            Console.WriteLine("└────────────────────────────────────────┘ ");
-            Console.WriteLine();
-            Console.WriteLine("Your doctor:");
-
-            Console.WriteLine( );
-            Console.WriteLine("This is just a test case code ");
+            String instructions = "Your doctor: ";
+            Utils.DisplayHeader("My Doctor", instructions);
 
 
             try
             {
                 string RegisteredDoctor = Path.Combine(AppContext.BaseDirectory, "Data", "Patients", "RegisteredDoctors", $"{this.Id}.txt"); ;
 
-                
+
 
 
                 if (File.Exists(RegisteredDoctor))
                 {
                     string doctorId = File.ReadAllText(RegisteredDoctor).Trim();
-                    string doctorPath = Path.Combine(AppContext.BaseDirectory, "Data", "Doctors", $"{doctorId}.txt");
-               
-                if(File.Exists(doctorPath))
+                    Doctor doctor = Utils.FindUserById<Doctor>(doctorId);
+
+
+                    if (doctor != null)
                     {
-                        string[] Data = File.ReadAllLines(doctorPath)[0].Split('|');
-                        Doctor doctor = new Doctor(Data[0], Data[1], Data[2], Data[3], Data[4], Data[5], "Doctors");
                         Utils.PrintPersonDetails(doctor);
                     }
+
+
+
+
+
                     else
                     {
-                        Console.WriteLine("You don't have any registered Doctor (First else)!!!! ");
+                        Console.WriteLine($"Cound not found the ID {doctorId} doctor");
                     }
 
-
-              
-                
                 }
                 else
                 {
-                    Console.WriteLine("You don't have any registered Doctor (you triggered the second else) ");
+                    Console.WriteLine("You don't have any registered Doctor (you triggered the second else)");
                 }
-                
 
 
 
@@ -123,18 +109,12 @@ namespace HospitalApp
             string patientId = this.Id;
 
 
-            Console.Clear();
+            
 
-            Console.WriteLine("┌────────────────────────────────────────┐");
-            Console.WriteLine("|                                        |");
-            Console.WriteLine("|   DOTNET Hospital Management System    |");
-            Console.WriteLine("|--------------------------------------- |");
-            Console.WriteLine("|               My Details               | ");
-            Console.WriteLine("└────────────────────────────────────────┘ ");
+
+            String instructions = "";
+            Utils.DisplayHeader("My Appointments", "" );
             Console.WriteLine();
-            Console.WriteLine($"You can try to book appointment here , {Name}");
-
-            Console.ReadLine();
 
             string relationshipFilePath = Path.Combine(AppContext.BaseDirectory, "Data", "Patients", "RegisteredDoctors", $"{patientId}.txt");
 
@@ -252,18 +232,11 @@ namespace HospitalApp
 
         private void ListAllAppointments()
         {
-            Console.Clear();
+            
 
-            Console.WriteLine("┌────────────────────────────────────────┐");
-            Console.WriteLine("|                                        |");
-            Console.WriteLine("|   DOTNET Hospital Management System    |");
-            Console.WriteLine("|--------------------------------------- |");
-            Console.WriteLine("|               My Appointments          | ");
-            Console.WriteLine("└────────────────────────────────────────┘ ");
-            Console.WriteLine();
-            Console.WriteLine($"Appointments for {Name}  ");
-            Console.WriteLine("This will tell you that this a appointments");
 
+            String instructions = $"Appointments for {Name} ";
+            Utils.DisplayHeader("My Appointments", instructions);
 
 
             var appointments = new List<Appointment>();
@@ -325,15 +298,12 @@ namespace HospitalApp
         private void ListPaitentsDetails()
         {
 
-            Console.Clear();
+           
 
-            Console.WriteLine("┌────────────────────────────────────────┐");
-            Console.WriteLine("|                                        |");
-            Console.WriteLine("|   DOTNET Hospital Management System    |");
-            Console.WriteLine("|--------------------------------------- |");
-            Console.WriteLine("|               My Details               | ");
-            Console.WriteLine("└────────────────────────────────────────┘ ");
-            Console.WriteLine();
+
+            String instructions = $"{Name} 's Details ";
+            Utils.DisplayHeader("My Details", instructions);
+
 
 
             Console.WriteLine($"{Name}'s Details");
@@ -348,50 +318,7 @@ namespace HospitalApp
 
         }
 
-        public override string ToString()
-        {
-            // 根据作业第10页的格式要求输出
-            string doctorName = "";
-
-            try
-            {
-                // 2. 使用 Path.Combine 来安全地构建文件路径
-                string relationshipFilePath = Path.Combine(AppContext.BaseDirectory, "Data", "Patients", "RegisteredDoctors", $"{this.Id}.txt");
-
-                // 3. 检查关联文件是否存在
-                if (File.Exists(relationshipFilePath))
-                {
-                    string doctorId = File.ReadAllText(relationshipFilePath).Trim();
-
-                    // 确保读取到的 doctorId 不是空的
-                    if (!string.IsNullOrEmpty(doctorId))
-                    {
-                        string doctorFilePath = Path.Combine(AppContext.BaseDirectory, "Data", "Doctors", $"{doctorId}.txt");
-
-                        // 4.【关键】再次检查医生的详细信息文件是否存在，防止程序崩溃
-                        if (File.Exists(doctorFilePath))
-                        {
-                            string[] doctorData = File.ReadAllLines(doctorFilePath)[0].Split('|');
-                            if (doctorData.Length >= 3)
-                            {
-                                doctorName = doctorData[2]; // 获取医生的名字
-                            }
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                // 如果在查找过程中发生任何预料之外的错误，程序也不会崩溃
-                // 而是会安全地使用默认值 "Not Assigned"
-                // 我们可以在控制台打印错误信息，方便调试
-                Console.WriteLine($"\n[DEBUG] Error in Patient.ToString() for Patient ID {this.Id}: {ex.Message}");
-            }
-
-            // 5. 使用我们之前优化好的、统一的列宽度来格式化并返回最终的字符串
-            return $"{this.Name,-15} | {doctorName,-15} | {this.Email,-25} | {this.Phone,-12} | {this.Address,-40}";
-        }
-     
+        
         
 
 
@@ -399,18 +326,10 @@ namespace HospitalApp
         public override void Menu()
         {
             while (true) {
-                Console.Clear();
+              
+                String instructions = $"Welcome to DOTNET Hospital Management System {Name}";
+                Utils.DisplayHeader("Patient Menu ", instructions);
 
-                Console.WriteLine("┌────────────────────────────────────────┐");
-                Console.WriteLine("|                                        |");
-                Console.WriteLine("|   DOTNET Hospital Management System    |");
-                Console.WriteLine("|--------------------------------------- |");
-                Console.WriteLine("|              Patient Menu              | ");
-                Console.WriteLine("└────────────────────────────────────────┘ ");
-                Console.WriteLine();
-
-
-                Console.WriteLine($"Welcome to DOTNET Hospital Management System {Name}");
 
                 foreach (string option in options)
                 {
@@ -467,7 +386,13 @@ namespace HospitalApp
                 }
 
             }
+                
+        }
 
+        ~Patient()
+        {
+            Console.WriteLine("Patient object destroyed and clearing memory");
+            GC.Collect();
         }
 
 

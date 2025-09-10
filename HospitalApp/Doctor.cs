@@ -54,17 +54,18 @@ namespace HospitalApp
 
         private void ListMyDetails()
         {
-            Console.Clear();
+            //Console.Clear();
 
-            Console.WriteLine("┌────────────────────────────────────────┐");
-            Console.WriteLine("|                                        |");
-            Console.WriteLine("|   DOTNET Hospital Management System    |");
-            Console.WriteLine("|--------------------------------------- |");
-            Console.WriteLine("|               My Details               | ");
-            Console.WriteLine("└────────────────────────────────────────┘ ");
-            Console.WriteLine();
+            //Console.WriteLine("┌────────────────────────────────────────┐");
+            //Console.WriteLine("|                                        |");
+            //Console.WriteLine("|   DOTNET Hospital Management System    |");
+            //Console.WriteLine("|--------------------------------------- |");
+            //Console.WriteLine("|               My Details               | ");
+            //Console.WriteLine("└────────────────────────────────────────┘ ");
+            //Console.WriteLine();
 
-            Console.WriteLine($"Doctor Name: {Name}");
+            String instructions = $" {Name} 's Details ";
+            Utils.DisplayHeader("My Details", instructions);
 
 
 
@@ -80,20 +81,12 @@ namespace HospitalApp
 
         private void AssignedPatients()
         {
-            Console.Clear();
-
-            Console.WriteLine("┌────────────────────────────────────────┐");
-            Console.WriteLine("|                                        |");
-            Console.WriteLine("|   DOTNET Hospital Management System    |");
-            Console.WriteLine("|--------------------------------------- |");
-            Console.WriteLine("|               My Details               | ");
-            Console.WriteLine("└────────────────────────────────────────┘ ");
-            Console.WriteLine();
+          
 
 
 
-
-            Console.WriteLine($"Patients Assigned to {Name}");
+            String instructions = $"Patients assigned to {Name} ";
+            Utils.DisplayHeader("My Patients", instructions);
 
 
 
@@ -110,18 +103,18 @@ namespace HospitalApp
                 if (File.Exists(RegisteredPatient))
                 {
                     string patientId = File.ReadAllText(RegisteredPatient).Trim();
-                    string patientPath = Path.Combine(AppContext.BaseDirectory, "Data", "Patients", $"{patientId}.txt");
+                    Patient patient = Utils.FindUserById<Patient>(patientId);
 
-                    if (File.Exists(patientPath))
-                    {
-                        string[] Data = File.ReadAllLines(patientPath)[0].Split('|');
+                   
 
-                        Patient patient = new Patient(Data[0], Data[1], Data[2], Data[3], Data[4], Data[5], "Patients");
+             if(patient !=null) { 
                         Utils.PrintPersonDetails(patient);
+
+
                     }
                     else
                     {
-                        Console.WriteLine("You don't have any registered Patient (First else)!!!! ");
+                        Console.WriteLine($"Could not find the patient id {patientId} (First else)!!!! ");
                     }
 
 
@@ -157,17 +150,13 @@ namespace HospitalApp
         private void ListAllAppointments()
         {
 
-            Console.Clear();
+           
 
-            Console.WriteLine("┌────────────────────────────────────────┐");
-            Console.WriteLine("|                                        |");
-            Console.WriteLine("|   DOTNET Hospital Management System    |");
-            Console.WriteLine("|--------------------------------------- |");
-            Console.WriteLine("|               My Details               | ");
-            Console.WriteLine("└────────────────────────────────────────┘ ");
-            Console.WriteLine();
 
-            Console.WriteLine($"Doctor Name: {Name}");
+            String instructions = " ";
+            Utils.DisplayHeader("All Appointments", instructions);
+
+
             Console.WriteLine("This is a Appointments listing details ");
 
             var appointments = new List<Appointment>();
@@ -229,24 +218,19 @@ namespace HospitalApp
         private void ListsAppointmentsWithPatients()
         {
 
-            while (true) { 
-            Console.Clear();
+            while (true) {
+               
 
-            Console.WriteLine("┌────────────────────────────────────────┐");
-            Console.WriteLine("|                                        |");
-            Console.WriteLine("|   DOTNET Hospital Management System    |");
-            Console.WriteLine("|--------------------------------------- |");
-            Console.WriteLine("|               My Details               | ");
-            Console.WriteLine("└────────────────────────────────────────┘ ");
-            Console.WriteLine();
 
-            Console.WriteLine($"Doctor Name: {Name}");
+                string instructions = "Enter the ID of the patient you would like to view appointments for: ";
+                Utils.DisplayHeader("Appointments with", instructions);
+                
             
 
            
             string errorMessage = "";
             
-            Console.WriteLine("Enter the ID of the patient you would like to view appointments for.");
+            
 
             // 如果有错误信息，就显示它
             if (!string.IsNullOrEmpty(errorMessage))
@@ -345,22 +329,16 @@ namespace HospitalApp
         private void CheckPatients()
         {
 
-            Console.Clear();
+            
 
-            Console.WriteLine("┌────────────────────────────────────────┐");
-            Console.WriteLine("|                                        |");
-            Console.WriteLine("|   DOTNET Hospital Management System    |");
-            Console.WriteLine("|--------------------------------------- |");
-            Console.WriteLine("|               My Details               | ");
-            Console.WriteLine("└────────────────────────────────────────┘ ");
-            Console.WriteLine();
+            String instructions = "Enter the ID of the patient to check: ";
+            Utils.DisplayHeader("Check Patient Details", instructions);
 
-            Console.WriteLine($"Doctor Name: {Name}");
-            Console.WriteLine("This is for checking patients  ");
+            
 
 
             
-                Console.Write("Enter the ID of the patient to check: ");
+                
                 string patientId = Console.ReadLine();
 
                 // 步骤2：验证用户输入
@@ -440,18 +418,11 @@ namespace HospitalApp
         {
             while (true)
             {
-                Console.Clear();
-
-                Console.WriteLine("┌────────────────────────────────────────┐");
-                Console.WriteLine("|                                        |");
-                Console.WriteLine("|   DOTNET Hospital Management System    |");
-                Console.WriteLine("|--------------------------------------- |");
-                Console.WriteLine("|             Doctor  Menu               | ");
-                Console.WriteLine("└────────────────────────────────────────┘ ");
-                Console.WriteLine();
+                
 
 
-                Console.WriteLine($"Welcome to DOTNET Hospital Management System {Name}");
+                String instructions = $"Welcome to DOTNET Hospital Management System {Name}";
+                Utils.DisplayHeader("Doctor Menu", instructions);
 
 
                 foreach (string option in options)
@@ -510,6 +481,11 @@ namespace HospitalApp
 
             }
 
+        }
+        ~Doctor()
+        {
+            Console.WriteLine("Doctor object destroyed and clearing memory");
+            GC.Collect();
         }
 
     }

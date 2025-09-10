@@ -1,4 +1,5 @@
 12345|13335|Feel very sick
-12345|13335|I have headache
-12345|13335|I have pain in legs
-12345|13335|ddidi
+12345|13335|Feel very sick with my head
+12345|13335|Feel painful with my wife 
+12345|13335|Feel painful in my legs
+12345|13335|Feel pain in my head
