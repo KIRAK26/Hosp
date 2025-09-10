@@ -344,21 +344,27 @@ namespace HospitalApp
             // 2. 主循环：负责界面绘制、光标导航和接收输入
             while (true)
             {
-                Console.Clear();
-                // 【改动】这里的标题现在是 Add Doctor
-                Console.WriteLine("┌────────────────────────────────────────┐");
-                Console.WriteLine("|    DOTNET Hospital Management System   |");
-                Console.WriteLine("|----------------------------------------|");
-                Console.WriteLine("|                Add Doctor                |");
-                Console.WriteLine("└────────────────────────────────────────┘");
-                Console.WriteLine("\nUse UP/DOWN arrows to switch. Press ENTER to submit when done.");
+                //Console.Clear();
+                //// 【改动】这里的标题现在是 Add Doctor
+                //Console.WriteLine("┌────────────────────────────────────────┐");
+                //Console.WriteLine("|    DOTNET Hospital Management System   |");
+                //Console.WriteLine("|----------------------------------------|");
+                //Console.WriteLine("|                Add Doctor                |");
+                //Console.WriteLine("└────────────────────────────────────────┘");
+                
 
-                if (!string.IsNullOrEmpty(errorMessage))
-                {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine(errorMessage);
-                    Console.ResetColor();
-                }
+
+                string whoMenu = "Add Doctor";
+                String insructions = "Use UP/DOWN arrows to switch. Press ENTER to submit when done ";
+
+                Utils.DisplayHeader(whoMenu, insructions, errorMessage);
+
+                //if (!string.IsNullOrEmpty(errorMessage))
+                //{
+                //    Console.ForegroundColor = ConsoleColor.Red;
+                //    Console.WriteLine(errorMessage);
+                //    Console.ResetColor();
+                //}
 
                 int formTop = Console.CursorTop;
                 int labelWidth = 15;
@@ -398,15 +404,15 @@ namespace HospitalApp
             try
             {
                 // a) 从values数组中提取数据
-                string firstName = values[0];
-                string lastName = values[1];
+                string firstName = values[0].Capitalize();
+                string lastName = values[1].Capitalize();
                 string password = values[2];
                 string email = values[3];
                 string phone = values[4];
                 string streetNumber = values[5];
                 string street = values[6];
-                string city = values[7];
-                string state = values[8];
+                string city = values[7].Capitalize();
+                string state = values[8].ToUpper();
 
                 // b) 随机生成唯一的医生ID
                 string newDoctorId;
@@ -468,25 +474,15 @@ namespace HospitalApp
             while (true)
             {
                 // a) 绘制界面
-                Console.Clear();
-               
+              
 
-                Console.WriteLine("┌────────────────────────────────────────┐");
-                Console.WriteLine("|                                        |");
-                Console.WriteLine("|   DOTNET Hospital Management System    |");
-                Console.WriteLine("|--------------------------------------- |");
-                Console.WriteLine("|              Administrator Menu        | ");
-                Console.WriteLine("└────────────────────────────────────────┘ ");
-                Console.WriteLine();
+                string whoMenu = "Add Doctor";
+                String insructions = "Use UP/DOWN arrows to switch. Press ENTER to submit when done ";
 
-                Console.WriteLine("Use UP/DOWN arrows to switch. Press ENTER to submit when done.");
+                Utils.DisplayHeader(whoMenu, insructions, errorMessage);
 
-                if (!string.IsNullOrEmpty(errorMessage))
-                {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine(errorMessage);
-                    Console.ResetColor();
-                }
+
+              
 
                 int formTop = Console.CursorTop;
                 int labelWidth = 15;
@@ -559,15 +555,15 @@ namespace HospitalApp
             try
             {
                 // a) 从values数组中提取数据
-                string firstName = values[0];
-                string lastName = values[1];
+                string firstName = values[0].Capitalize();
+                string lastName = values[1].Capitalize();
                 string password = values[2];
                 string email = values[3];
                 string phone = values[4];
                 string streetNumber = values[5];
                 string street = values[6];
-                string city = values[7];
-                string state = values[8];
+                string city = values[7].Capitalize();
+                string state = values[8].ToUpper();
 
                 // b) 【你的要求】随机生成唯一的病人ID
                 string newPatientId;

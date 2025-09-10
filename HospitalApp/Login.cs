@@ -12,16 +12,19 @@ namespace HospitalApp
 {
     internal class Login
     {
-
+        
         private string? Id, Password;
 
 
-        // 文件: Login.cs
+        
 
         public void LoginMenu()
-        {
-            var values = new string[] { "", "" }; // values[0] 存ID, values[1] 存Password
-            int currentField = 0; // 0代表ID, 1代表Password
+        {   //values[0] store ID, value [1] store password 
+
+            var values = new string[] { "", "" }; 
+
+            //0 is the field of Id, 1 is the filed of password 
+            int currentField = 0; 
             ConsoleKeyInfo keyInfo;
             int formTop;
 
@@ -32,9 +35,14 @@ namespace HospitalApp
             Console.WriteLine("Use UP/DOWN arrows to switch fields. Press ENTER to login.");
             Console.WriteLine();
 
+            //Record the starting line of the cursor 
             formTop = Console.CursorTop;
+
+            // Track the cursor's horizontal position
             int cursorPosition = 0;
-            // 2. 主循环
+            
+
+            // loop to handle user input 
             while (true)
             {
                
@@ -42,26 +50,26 @@ namespace HospitalApp
 
 
                
-                int inputLeftPosition = 11; // "Password : ".Length
+                int inputLeftPosition = 11; // Strating colum for user input text 
 
-                // 画ID行
+                // Draw the ID field,re draw the entire menu on each key press  
                 Console.SetCursorPosition(0, formTop);
                 Console.Write($"ID       : {values[0]}".PadRight(Console.WindowWidth - 1));
 
-                // 画Password行
+                // Draw the password field, use * to mask 
                 Console.SetCursorPosition(0, formTop + 1);
                 Console.Write($"Password : {new string('*', values[1].Length)}".PadRight(Console.WindowWidth - 1));
 
-                // 【关键改动 2】把光标精确定位到当前输入框的末尾
+                // Place Cusor at the position in the current active field 
                 Console.SetCursorPosition(inputLeftPosition + cursorPosition, formTop + currentField);
 
-                // b) 读取用户按键
+                // Waiting the next key press from the user 
                 keyInfo = Console.ReadKey(true);
 
-                // c) 处理按键
+                // Handle the user's key press 
                 if (keyInfo.Key == ConsoleKey.Enter)
                 {
-                    break; // 按回车，跳出循环去登录
+                    break; 
                 }
                 else if (keyInfo.Key == ConsoleKey.UpArrow)
                 {
@@ -78,32 +86,32 @@ namespace HospitalApp
                 {
                     if (cursorPosition > 0)
                     {
-                        cursorPosition--;
+                        cursorPosition--; // Move cursor left 
                     }
                 }
                 else if (keyInfo.Key == ConsoleKey.RightArrow)
                 {
                     if (cursorPosition < values[currentField].Length)
                     {
-                        cursorPosition++;
+                        cursorPosition++; // Move curso right 
                     }
                 }
                 else if (keyInfo.Key == ConsoleKey.Backspace)
                 {
                     if (cursorPosition > 0)
                     {
-                        // 从光标前一个位置开始，删除1个字符
+                        // Remove the character before the cursor 
                         values[currentField] = values[currentField].Remove(cursorPosition - 1, 1);
-                        cursorPosition--; // 光标位置也要跟着向左移动
+                        cursorPosition--; // Cusor position move to left 
                     }
                 }
                 else if (keyInfo.Key == ConsoleKey.Delete)
                 {
                     if (cursorPosition < values[currentField].Length)
                     {
-                        // 从光标当前位置开始，删除1个字符
+                        // Remove the character at the cursors' position 
                         values[currentField] = values[currentField].Remove(cursorPosition, 1);
-                        // 光标位置不变，因为后面的字符会补上来
+                        //Cusor position remain unchange
                     }
                 }
 
@@ -111,18 +119,19 @@ namespace HospitalApp
 
                 else if (!char.IsControl(keyInfo.KeyChar))
                 {
+                    //Insert the typed Character at the cursor's position 
                     values[currentField] = values[currentField].Insert(cursorPosition, keyInfo.KeyChar.ToString());
-                    cursorPosition++; // 光标向右移动
+                    cursorPosition++; 
                 }
-            } // 循环结束
+            } 
 
-            // 3. 循环结束后，处理登录
+            // assign the values for processing after loop 
             this.Id = values[0];
             this.Password = values[1];
 
             Console.SetCursorPosition(0, formTop + 4);
 
-            // 简单的非空验证
+            //Basic validation to make sure fields are not empty 
             if (string.IsNullOrWhiteSpace(this.Id) || string.IsNullOrWhiteSpace(this.Password))
             {
                 Console.WriteLine("ID or Password cannot be empty. Press <Enter> to try again.");
@@ -135,52 +144,17 @@ namespace HospitalApp
         }
 
 
-        //它的作用就是拼接出某个角色的用户文件的绝对路径。
+        
 
-        //这样你不用每次都手写 Path.Combine(AppContext.BaseDirectory, "Data", "Patients", fileName)，只要调用 DataPathOf(...) 就行。
+       
+
+        //Construct  relative file path within the applicaiton Data path directory 
         private static string DataPathOf(string roleFolder, string fileName)
     => Path.Combine(AppContext.BaseDirectory, "Data", roleFolder, fileName);
 
 
 
-        //private static string PasswordHandle()
-        ////why is private static ? private means it only can be used in the Login.cs, static means it doesn't need to use the field in the Login.cs
-        //{
-        //    string Password = "";
-        //    //Enum ConsoleKey
-        //    ConsoleKeyInfo key;
-
-        //    while (true)
-        //    {   //read user input,also block it 
-        //        key = Console.ReadKey(intercept: true);
-
-        //        //Identify special input from user,it is to identifie the type of the input, such as ConsoleKey.backspace,ConsoleKey.Keychar
-
-        //        //When user have input, both the Key,and the KeyChar generate something
-        //        if (key.Key == ConsoleKey.Enter)
-        //        {
-        //            Console.WriteLine();
-        //            break;
-        //        }
-
-
-        //        else if (key.Key == ConsoleKey.Backspace && Password.Length > 0)
-        //        {
-        //            Password = Password.Substring(0, Password.Length - 1);
-        //            Console.Write("\b \b");
-        //        }
-        //        //Check if the KeyChar contain the control string 
-        //        else if (!char.IsControl(key.KeyChar))
-        //        {
-        //            Password += key.KeyChar;
-        //            Console.Write("*");
-        //        }
-        //    }
-
-
-
-        //    return Password;
-        //}
+        
 
 
         private void HandleUserLogin()
@@ -190,17 +164,19 @@ namespace HospitalApp
             {   // user entered their Id to find the file 
                 string fileName = $"{Id}.txt";
 
+                //Construct paths for  possible user roles 
                 string adminPath = DataPathOf("Administrators", fileName);
                 string doctorPath = DataPathOf("Doctors", fileName);
                 string patientPath = DataPathOf("Patients", fileName);
 
 
-                Console.WriteLine($"[DEBUG] adminPath   = {adminPath}   Exists={File.Exists(adminPath)}");
-                Console.WriteLine($"[DEBUG] doctorPath  = {doctorPath}  Exists={File.Exists(doctorPath)}");
-                Console.WriteLine($"[DEBUG] patientPath = {patientPath} Exists={File.Exists(patientPath)}");
+                //Debuggin code to test if the path is exists 
+                //Console.WriteLine($"[DEBUG] adminPath   = {adminPath}   Exists={File.Exists(adminPath)}");
+                //Console.WriteLine($"[DEBUG] doctorPath  = {doctorPath}  Exists={File.Exists(doctorPath)}");
+                //Console.WriteLine($"[DEBUG] patientPath = {patientPath} Exists={File.Exists(patientPath)}");
 
 
-
+                //Check the user file to identify the users' role 
                 if (File.Exists(adminPath))
 
                 {
@@ -214,15 +190,16 @@ namespace HospitalApp
                 }
                 else if (File.Exists(patientPath))
                 {
-                    
 
-                    
+
+
                     VerfiyCred("Patients", patientPath);
 
 
                 }
                 else
                 {
+                    // if no file found , the user ID is invalid 
                     throw new Exception("Invalid ID, press <Enter> to try again!");
                 }
             }
@@ -235,7 +212,7 @@ namespace HospitalApp
                         Console.WriteLine(e.Message);
                         Console.ReadKey();
                         Console.Clear();
-                        LoginMenu();
+                        LoginMenu();   //Return to the login menu when failed
                         break;
 
 
@@ -258,51 +235,22 @@ namespace HospitalApp
                         LoginMenu();
                         break;
 
-
-
-
-
-
-
-
                 }
 
 
 
             }
 
-
-
-
-
         }
 
-
-
-
-
-
-
-
-        //Console.WriteLine("ID: {0}",myID);
-        //Console.WriteLine("Passowrd: {0}",masked);
-
-
-
-
-
-
-
-
-
         private void VerfiyCred(string position, string file)
-        {//the file will beconme this values :C:\Users\xluo4\Desktop\Semster 5\.NET Application Development\Assignment1\HospitalApp\HospitalApp\bin\Debug\net8.0\Data\Patients\12345.txt
-
+        {
+            //read the first line of the user file, which contain id and password 
             string[] lines = File.ReadAllLines(file, Encoding.UTF8);
             string[] details = lines[0].Split("|");
 
 
-            
+            //check if both Id and password match the  file 
             if (Id == details[0] && Password == details[1])
             {
                 Console.WriteLine("User account exists");
@@ -311,7 +259,7 @@ namespace HospitalApp
 
 
 
-
+                // Navigate user to the interface based on their role
                 switch (position)
                 {
                     case "Patients":
@@ -339,7 +287,7 @@ namespace HospitalApp
             }
 
             else
-            {
+            {   // If the password doesn't match, throw an exception , it will be caught by the handleuserLogin()
                 throw new Exception("Invalid Password, press <Enter> to try again");
             }
 
