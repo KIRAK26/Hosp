@@ -14,9 +14,9 @@ namespace HospitalApp
             {
                 if (string.IsNullOrEmpty(input))
                 {
-                    return input; // 如果字符串为空，则不做任何处理
+                    return input;
                 }
-                // 将第一个字符转为大写，其余所有字符转为小写
+                
                 return char.ToUpper(input[0]) + input.Substring(1).ToLower();
             }
         }

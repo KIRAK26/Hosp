@@ -163,7 +163,7 @@ namespace HospitalApp
 
             try
             {
-                // 【不同点 1】现在我们在 Doctors 文件夹里，用【医生自己的ID】来查找预约文件
+                
                 string appointmentFilePath = Path.Combine(AppContext.BaseDirectory, "Data", "Appointments", "Doctors", $"{this.Id}.txt");
 
                 if (File.Exists(appointmentFilePath))
@@ -177,20 +177,20 @@ namespace HospitalApp
                         string[] data = line.Split('|');
                         if (data.Length >= 3)
                         {
-                            // 数据格式依然是: PatientID|DoctorID|Description
-                            string patientId = data[0].Trim(); // 这次我们需要的是病人ID
+                            
+                            string patientId = data[0].Trim(); 
                             string description = data[2].Trim();
-                            string patientName = "Unknown Patient"; // 默认值
+                            string patientName = "Unknown Patient"; 
 
-                            // 【不同点 2】现在需要根据 Patient ID 去查找【病人】的名字
+                         
                             string patientPath = Path.Combine(AppContext.BaseDirectory, "Data", "Patients", $"{patientId}.txt");
                             if (File.Exists(patientPath))
                             {
                                 string[] patientData = File.ReadAllLines(patientPath)[0].Split('|');
-                                patientName = patientData[2]; // 假设名字在第3个位置
+                                patientName = patientData[2]; 
                             }
 
-                            // 【不同点 3】创建对象时，医生的名字就是当前登录的医生自己 (this.Name)
+                           
                             appointments.Add(new Appointment(this.Name, patientName, description));
                         }
                     }
@@ -201,7 +201,7 @@ namespace HospitalApp
                 Console.WriteLine($"An error occurred while fetching appointments: {e.Message}");
             }
 
-            // 【完全相同】最后，调用完全一样的 Utils 方法来显示结果
+           
             Utils.PrintAppointmentsTable(appointments);
 
             Console.WriteLine("\nPress <Enter> to return to the menu.");
@@ -232,7 +232,7 @@ namespace HospitalApp
             
             
 
-            // 如果有错误信息，就显示它
+           
             if (!string.IsNullOrEmpty(errorMessage))
             {
                 Console.ForegroundColor = ConsoleColor.Red;
@@ -240,35 +240,35 @@ namespace HospitalApp
                 Console.ResetColor();
             }
 
-            // 2. 获取用户输入
+           
             Console.Write("> ");
             string patientId = Console.ReadLine();
 
             if (patientId.ToLower() == "exit")
             {
-                break; // 退出循环
+                break; 
             }
 
             if (string.IsNullOrWhiteSpace(patientId))
             {
                 errorMessage = "Patient ID cannot be empty. Please try again.";
-                continue; // 重新循环
+                continue;
             }
 
             try
             {
-                // 3. 核心逻辑：验证病人是否存在
+               
                 string patientPath = Path.Combine(AppContext.BaseDirectory, "Data", "Patients", $"{patientId}.txt");
 
                 if (File.Exists(patientPath))
                 {
-                    // 病人存在，现在查找并显示他们的预约
+                    
                     var appointments = new List<Appointment>();
                     string patientName = File.ReadAllLines(patientPath)[0].Split('|')[2]; // 从病人文件获取名字
 
                     string appointmentFilePath = Path.Combine(AppContext.BaseDirectory, "Data", "Appointments", "Patients", $"{patientId}.txt");
 
-                    // 检查病人是否有预约文件
+                
                     if (File.Exists(appointmentFilePath))
                     {
                         string[] lines = File.ReadAllLines(appointmentFilePath);
@@ -279,27 +279,26 @@ namespace HospitalApp
                             string[] data = line.Split('|');
                             if (data.Length >= 3)
                             {
-                                // 文件内容: PatientID|DoctorID|Description
-                                // 我们只关心和当前医生相关的预约
+                               
                                 if (data[1].Trim() == this.Id)
                                 {
                                     string description = data[2].Trim();
-                                    // 创建 Appointment 对象, 医生的名字就是当前医生自己 (this.Name)
+                                   
                                     appointments.Add(new Appointment(this.Name, patientName, description));
                                 }
                             }
                         }
                     }
 
-                    // 4. 调用 Utils 方法显示结果（即使没有预约，也会显示一个空表格和提示）
+                   
                     Utils.PrintAppointmentsTable(appointments);
 
-                    // 任务完成，退出循环
+                  
                     break;
                 }
                 else
                 {
-                    // 病人ID不存在，设置错误信息并重新循环
+                    
                     errorMessage = $"Error: No patient found with ID '{patientId}'. Please try again.";
                     continue;
                 }
@@ -309,9 +308,7 @@ namespace HospitalApp
                 errorMessage = $"An error occurred: {ex.Message}";
                 continue;
             }
-        } // while 循环结束
-
-        // 5. 结束交互
+        } 
         Console.WriteLine("\nPress <Enter> to return to the menu.");
         Console.ReadLine();
     }
@@ -341,7 +338,7 @@ namespace HospitalApp
                 
                 string patientId = Console.ReadLine();
 
-                // 步骤2：验证用户输入
+             
                 if (string.IsNullOrWhiteSpace(patientId))
                 {
                     Console.WriteLine("\nPatient ID cannot be empty. Please try again.");
@@ -351,17 +348,17 @@ namespace HospitalApp
 
                 try
                 {
-                    // 步骤3：根据用户输入的 ID 查找病人文件
+                    
                     string patientPath = Path.Combine(AppContext.BaseDirectory, "Data", "Patients", $"{patientId}.txt");
 
                     if (File.Exists(patientPath))
                     {
-                        // 步骤4：如果病人存在，创建 Patient 对象
+                      
                         string[] patientData = File.ReadAllLines(patientPath)[0].Split('|');
-                        // 假设病人文件格式: Id|Password|Name|Address|Email|Phone
+                        
                         Patient patient = new Patient(patientData[0], patientData[1], patientData[2], patientData[3], patientData[4], patientData[5], "Patients");
 
-                        // 步骤5：根据病人的 ID，查找他/她关联的医生
+                        
                         string registeredDoctorPath = Path.Combine(AppContext.BaseDirectory, "Data", "Patients", "RegisteredDoctors", $"{patient.Id}.txt");
                         if (File.Exists(registeredDoctorPath))
                         {
@@ -373,20 +370,19 @@ namespace HospitalApp
                                 string[] doctorData = File.ReadAllLines(doctorPath)[0].Split('|');
                                 Doctor doctor = new Doctor(doctorData[0], doctorData[1], doctorData[2], doctorData[3], doctorData[4], doctorData[5], "Doctors");
 
-                                // 步骤6：调用 Utils 方法，传入两个对象进行打印
+                              
                                 Utils.PrintPatientDetails(patient, doctor);
                             }
                         }
                         else
                         {
-                            // 如果病人存在但没有关联医生，也应该能显示（医生部分为空）
-                            // 为了简化，我们这里暂时认为每个病人都有医生
+                            
                             Console.WriteLine($"\nCould not find the assigned doctor for patient {patient.Name}.");
                         }
                     }
                     else
                     {
-                        // 步骤7：如果病人文件不存在，给出错误提示 
+                        
                         Console.WriteLine($"\nError: No patient found with ID '{patientId}'.");
                     }
                 }
@@ -407,8 +403,7 @@ namespace HospitalApp
 
         public override string ToString()
         {
-            // 这个方法会返回一个我们精心格式化好的字符串，而不是默认的类名。
-            // 请确保你的 Doctor 类拥有 Name, Email, Phone, Address 这些公共属性。
+           
             return $"{this.Name,-20} | {this.Email,-25} | {this.Phone,-15} | {this.Address,-30}";
         }
 

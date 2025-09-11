@@ -120,13 +120,13 @@ namespace HospitalApp
 
             try
             {
-                // 步骤 1: 检查病人是否已经注册了医生
+              
                 if (!File.Exists(relationshipFilePath))
                 {
-                    // ---- 场景一：病人没有注册医生 ----
+                
                     Console.WriteLine("You are not registered with any doctor! Please choose which doctor you would like to register with:"); //
 
-                    // 加载所有医生
+                   
                     var allDoctors = new List<Doctor>();
                     string doctorsDirectoryPath = Path.Combine(AppContext.BaseDirectory, "Data", "Doctors");
                     string[] doctorFiles = Directory.GetFiles(doctorsDirectoryPath, "*.txt");
@@ -146,24 +146,23 @@ namespace HospitalApp
                         return;
                     }
 
-                    // 显示医生列表
+                    
                     for (int i = 0; i < allDoctors.Count; i++)
                     {
                         Console.WriteLine($"{i + 1}. {allDoctors[i]}"); // 这里利用了我们为Doctor写的ToString()方法
                     }
 
-                    // 获取用户选择
+                   
                     Console.Write("Please choose a doctor: "); //
                     int choice = -1;
                     if (int.TryParse(Console.ReadLine(), out choice) && choice > 0 && choice <= allDoctors.Count)
                     {
                         assignedDoctor = allDoctors[choice - 1];
 
-                        // 【关键文件操作 1】创建病人的医生关联文件
+                        
                         File.WriteAllText(relationshipFilePath, assignedDoctor.Id);
 
-                        // 【关键文件操作 2】更新医生的病人关联文件
-                        // 注意：一个医生可以有多个病人，所以我们用 Append (追加)
+                       
                         string doctorRelationshipPath = Path.Combine(AppContext.BaseDirectory, "Data", "Doctors", "RegisteredPatient", $"{assignedDoctor.Id}.txt");
                         File.AppendAllText(doctorRelationshipPath, $"{patientId}{Environment.NewLine}");
                     }
@@ -176,7 +175,7 @@ namespace HospitalApp
                 }
                 else
                 {
-                    // ---- 场景二：病人已经有注册医生 ----
+                   
                     string doctorId = File.ReadAllText(relationshipFilePath).Trim();
                     string doctorPath = Path.Combine(AppContext.BaseDirectory, "Data", "Doctors", $"{doctorId}.txt");
                     if (File.Exists(doctorPath))
@@ -186,18 +185,17 @@ namespace HospitalApp
                     }
                 }
 
-                // ---- 共通流程：获取描述并创建预约记录 ----
+               
                 if (assignedDoctor != null)
                 {
                     Console.WriteLine($"\nYou are booking a new appointment with {assignedDoctor.Name}"); //
                     Console.Write("Description of the appointment: "); //
                     string description = Console.ReadLine();
 
-                    // 准备预约数据
+                    
                     string appointmentData = $"{patientId}|{assignedDoctor.Id}|{description}{Environment.NewLine}";
 
-                    // 【关键文件操作 3】写入两条预约记录
-                    // 注意：一个病人/医生可以有多个预约，所以我们用 Append (追加)
+                    
                     string patientAppointmentPath = Path.Combine(AppContext.BaseDirectory, "Data", "Appointments", "Patients", $"{patientId}.txt");
                     string doctorAppointmentPath = Path.Combine(AppContext.BaseDirectory, "Data", "Appointments", "Doctors", $"{assignedDoctor.Id}.txt");
 
@@ -243,36 +241,35 @@ namespace HospitalApp
 
             try
             {
-                // 步骤1：定位当前病人的预约文件
+                
                 string appointmentFilePath = Path.Combine(AppContext.BaseDirectory, "Data", "Appointments", "Patients", $"{this.Id}.txt");
 
                 if (File.Exists(appointmentFilePath))
                 {
-                    // 步骤2：读取文件中的每一行，每一行都是一次预约
+                   
                     string[] lines = File.ReadAllLines(appointmentFilePath);
 
                     foreach (string line in lines)
                     {
-                        if (string.IsNullOrWhiteSpace(line)) continue; // 跳过空行
+                        if (string.IsNullOrWhiteSpace(line)) continue; 
 
                         string[] data = line.Split('|');
                         if (data.Length >= 3)
                         {
-                            // data[0] 是 Patient ID, data[1] 是 Doctor ID, data[2] 是 Description
+                            
                             string doctorId = data[1].Trim();
                             string description = data[2].Trim();
-                            string doctorName = ""; // 默认值
+                            string doctorName = ""; 
 
-                            // 步骤3：根据 Doctor ID 找到医生的名字
+                            
                             string doctorPath = Path.Combine(AppContext.BaseDirectory, "Data", "Doctors", $"{doctorId}.txt");
                             if (File.Exists(doctorPath))
                             {
                                 string[] doctorData = File.ReadAllLines(doctorPath)[0].Split('|');
-                                doctorName = doctorData[2]; // 假设名字在第3个位置
+                                doctorName = doctorData[2]; 
                             }
 
-                            // 步骤4：创建 Appointment 对象并添加到列表
-                            // 病人的名字就是当前登录用户自己的名字 (this.Name)
+                            
                             appointments.Add(new Appointment(doctorName, this.Name, description));
                         }
                     }
@@ -283,7 +280,7 @@ namespace HospitalApp
                 Console.WriteLine($"An error occurred while fetching appointments: {e.Message}");
             }
 
-            // 步骤5：调用 Utils 方法来显示整个列表
+           
             Utils.PrintAppointmentsTable(appointments);
 
             Console.WriteLine("\nPress <Enter> to return to the menu.");
