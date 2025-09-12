@@ -9,8 +9,10 @@ namespace HospitalApp
 {
     public abstract class User
     {
-
+        //Public fileds for common suer properties 
         public string Role, Name, Id, Password;
+
+        // An array to hold the menu options specifci to the usesr' role
         public string[] options = Array.Empty<string>();
 
 
@@ -22,6 +24,9 @@ namespace HospitalApp
             this.Password = Password;
             this.Name = Name;
             this.Role = Role;
+
+
+            // Initialize the menu options based on the user's role 
 
             switch (Role)
             {
@@ -74,7 +79,7 @@ namespace HospitalApp
             }
 
         }
-
+        //Use abstract keyword to force all derived class to have its own specifci menu logic 
         public abstract void Menu();
 
 

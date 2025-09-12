@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace HospitalApp.Data
 {
+
+
+    // Single appointment record, linking a doctor and a patient.
     public class Appointment
     {
         private string doctorID, patientID, description;
@@ -18,13 +21,13 @@ namespace HospitalApp.Data
             this.description = description;
         }
 
-
+        // public property to safaely access and modify the doctor's ID 
         public string DoctorID
         {
             get { return doctorID; }
             set { doctorID = value; }
         }
-
+        //Same as the doctor's ID 
         public string PatientID
         {
             get { return patientID; }
@@ -41,8 +44,10 @@ namespace HospitalApp.Data
 
 
 
+
+
         ~Appointment()
-        {
+        {  // Manually calling GC.Collect() 
             Console.WriteLine("Destoryed Appointment object and clearing memory");
             GC.Collect();
 

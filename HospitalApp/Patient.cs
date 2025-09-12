@@ -5,24 +5,27 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Net.Sockets;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace HospitalApp
 {
+
+    //  Patient is inheriting from the base USer class and connect to the PersonalDetails interface. 
     internal class Patient: User, PersonalDetails
 
     {
 
 
 
-        //redelcare since it has a base Name filed 
+        //Publicly exposes the Name property from the base User class 
         public string Name => base.Name;
         public string Address { get; private set; }
         public string Email { get; private set; }
         public string Phone { get; private set; }
 
-
+        // Constructor for creating an Patient object, calling the base User constructor.
         public Patient(string Id, string Password, string Name, string Address, string Email, string Phone, string Role)
     : base(Id, Password, Name, Role)
         {
@@ -31,6 +34,9 @@ namespace HospitalApp
             this.Phone = Phone;
         }
 
+
+
+        // This is the represent the user details .
         public void Details()
         {
             
@@ -49,7 +55,7 @@ namespace HospitalApp
         }
 
 
-     
+        
         private void AssignedDoctor()
         {
             
@@ -59,14 +65,14 @@ namespace HospitalApp
 
 
             try
-            {
+            {   //Store the file path taht stores the patient-doctor relationship
                 string RegisteredDoctor = Path.Combine(AppContext.BaseDirectory, "Data", "Patients", "RegisteredDoctors", $"{this.Id}.txt"); ;
 
 
 
 
                 if (File.Exists(RegisteredDoctor))
-                {
+                {    // If the file exists, read the doctor's ID and find the doctor's details.
                     string doctorId = File.ReadAllText(RegisteredDoctor).Trim();
                     Doctor doctor = Utils.FindUserById<Doctor>(doctorId);
 
@@ -120,13 +126,13 @@ namespace HospitalApp
 
             try
             {
-              
+                // Check if the patient is already registered with a doctor.
                 if (!File.Exists(relationshipFilePath))
                 {
                 
                     Console.WriteLine("You are not registered with any doctor! Please choose which doctor you would like to register with:"); //
 
-                   
+                    // If not registered, load and display a list of all available doctors.
                     var allDoctors = new List<Doctor>();
                     string doctorsDirectoryPath = Path.Combine(AppContext.BaseDirectory, "Data", "Doctors");
                     string[] doctorFiles = Directory.GetFiles(doctorsDirectoryPath, "*.txt");
@@ -146,7 +152,7 @@ namespace HospitalApp
                         return;
                     }
 
-                    
+                    // Display the list for the patient to choose from.
                     for (int i = 0; i < allDoctors.Count; i++)
                     {
                         Console.WriteLine($"{i + 1}. {allDoctors[i]}"); // 这里利用了我们为Doctor写的ToString()方法
@@ -159,7 +165,7 @@ namespace HospitalApp
                     {
                         assignedDoctor = allDoctors[choice - 1];
 
-                        
+                        // Assign the chosen doctor and create the relationship files.
                         File.WriteAllText(relationshipFilePath, assignedDoctor.Id);
 
                        
@@ -175,7 +181,7 @@ namespace HospitalApp
                 }
                 else
                 {
-                   
+                   // If already registered, load the assigned doctor's details directly.
                     string doctorId = File.ReadAllText(relationshipFilePath).Trim();
                     string doctorPath = Path.Combine(AppContext.BaseDirectory, "Data", "Doctors", $"{doctorId}.txt");
                     if (File.Exists(doctorPath))
@@ -185,20 +191,20 @@ namespace HospitalApp
                     }
                 }
 
-               
+                // Proceed with booking if a doctor is assigned.
                 if (assignedDoctor != null)
                 {
                     Console.WriteLine($"\nYou are booking a new appointment with {assignedDoctor.Name}"); //
                     Console.Write("Description of the appointment: "); //
                     string description = Console.ReadLine();
 
-                    
+                    // Format the appointment data and 
                     string appointmentData = $"{patientId}|{assignedDoctor.Id}|{description}{Environment.NewLine}";
 
                     
                     string patientAppointmentPath = Path.Combine(AppContext.BaseDirectory, "Data", "Appointments", "Patients", $"{patientId}.txt");
                     string doctorAppointmentPath = Path.Combine(AppContext.BaseDirectory, "Data", "Appointments", "Doctors", $"{assignedDoctor.Id}.txt");
-
+                    //Save it to both patient's and doctor's appointment files.
                     File.AppendAllText(patientAppointmentPath, appointmentData);
                     File.AppendAllText(doctorAppointmentPath, appointmentData);
 
@@ -256,7 +262,7 @@ namespace HospitalApp
                         string[] data = line.Split('|');
                         if (data.Length >= 3)
                         {
-                            
+                            // For each appointment, find the doctor's name to display it.
                             string doctorId = data[1].Trim();
                             string description = data[2].Trim();
                             string doctorName = ""; 
@@ -280,7 +286,7 @@ namespace HospitalApp
                 Console.WriteLine($"An error occurred while fetching appointments: {e.Message}");
             }
 
-           
+            // Use the utility function to print the formatted table of appointments.
             Utils.PrintAppointmentsTable(appointments);
 
             Console.WriteLine("\nPress <Enter> to return to the menu.");
@@ -315,11 +321,11 @@ namespace HospitalApp
 
         }
 
-        
-        
 
 
 
+
+        // Overrides the abstract Menu method from the User class to provide patient-specific options.
         public override void Menu()
         {
             while (true) {
@@ -386,6 +392,8 @@ namespace HospitalApp
                 
         }
 
+
+        // Destructor for the Patient class 
         ~Patient()
         {
             Console.WriteLine("Patient object destroyed and clearing memory");
